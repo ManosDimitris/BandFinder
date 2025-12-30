@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/admin.css">
+  
+</head>
+<body>
+  <div id="adminDashboard" class="admin-dashboard">
+    <header class="dashboard-header">
+      <h1>Admin Dashboard</h1>
+      <div class="admin-info">
+        <span>Welcome, <strong id="adminUsername">Admin</strong></span>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+      </div>
+    </header>
+    
+    <div class="dashboard-main">
+      <aside class="dashboard-sidebar">
+        <nav class="dashboard-menu">
+          <h3>Management</h3>
+          <ul>
+            <li><a href="#" class="menu-link active" data-tab="statistics">Statistics</a></li>
+            <li><a href="#" class="menu-link" data-tab="users">User Management</a></li>
+            <li><a href="#" class="menu-link" data-tab="reviews">Review Management</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="dashboard-content">
+        <div id="statistics" class="dashboard-section active-tab">
+          <h2>Statistics</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Total Users</h3>
+              <p class="stat-number" id="totalUsers">--</p>
+            </div>
+            <div class="stat-card">
+              <h3>Total Bands</h3>
+              <p class="stat-number" id="totalBands">--</p>
+            </div>
+            <div class="stat-card">
+              <h3>Total Events</h3>
+              <p class="stat-number" id="totalEvents">--</p>
+            </div>
+            <div class="stat-card">
+              <h3>Site Revenue</h3>
+              <p class="stat-number" id="siteRevenue">€--</p>
+            </div>
+          </div>
+
+          <div class="charts-container">
+            <div class="chart-wrapper">
+              <h3>Bands by City</h3>
+              <div id="chart_bands_city" style="width: 100%; height: 400px;"></div>
+            </div>
+            <div class="chart-wrapper">
+              <h3>Users vs Bands</h3>
+              <div id="chart_users_bands" style="width: 100%; height: 400px;"></div>
+            </div>
+            <div class="chart-wrapper">
+              <h3>Events: Public vs Private</h3>
+              <div id="chart_events" style="width: 100%; height: 400px;"></div>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="users" class="dashboard-section">
+          <h2>User Management</h2>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>City</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody">
+             
+            </tbody>
+          </table>
+        </div>
+
+        <div id="reviews" class="dashboard-section">
+          <h2>Review Management</h2>
+          <div class="reviews-list" id="reviewsContainer">
+            <div class="review-item">
+              <h4>Review from Alice about The Harmonics</h4>
+              <p><strong>Rating:</strong> 5/5</p>
+              <p><strong>Status:</strong> <span class="badge pending">Pending</span></p>
+              <p>"Amazing performance! Highly recommend for your events."</p>
+              <div class="review-actions">
+                <button class="btn-approve">Approve</button>
+                <button class="btn-reject">Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
