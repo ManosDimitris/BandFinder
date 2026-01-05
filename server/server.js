@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const database = require("./config/database");
 const session = require('express-session');
+const { isAdmin, isAuthenticated } = require('./Authentication/auth');
 require('dotenv').config();
 
 
@@ -26,9 +27,10 @@ app.use(session({
 
 app.use(express.static(path.join(__dirname, "../public")));
 
-const adminRoutes = require('./routes/admin');
+const adminRoutes = require('./routes/adminRoutes');
 
 app.use('/api/admin', adminRoutes);
+app.use('/api/user', require('./routes/userRoutes'));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", "index.html"));
@@ -42,10 +44,18 @@ app.get('/admin-dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", 'admin_dashboard.html'));
 });
 
+app.get('/user-login', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "pages", 'login_user.html'));
+});
+
+app.get('/user-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "pages", 'user_dashboard.html'));
+});
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running on http://${HOST}:${PORT}`);
   console.log(`Admin login: http://${HOST}:${PORT}/admin-login`);
-
+  console.log(`User login: http://${HOST}:${PORT}/user-login`);
 });
 
   
