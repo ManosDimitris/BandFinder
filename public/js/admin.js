@@ -26,12 +26,12 @@ function handleAdminLogin() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById('email').value.trim();
+    const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
 
     errorMessage.style.display = 'none';
 
-    if (!email || !password) {
+    if (!username || !password) {
       return;
     }
 
@@ -41,13 +41,13 @@ function handleAdminLogin() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ username, password })
       });
 
       const data = await response.json();
 
       if (data.success) {
-        window.location.href = '/user-dashboard';
+        window.location.href = '/admin-dashboard';
       } else {
         showError(data.message || 'Login failed ');
       }

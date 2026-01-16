@@ -6,6 +6,7 @@ function isAdmin(req, res, next) {
   }
 }
 
+//GIA USERS ONLY
 function isAuthenticated(req, res, next) {
   if (req.session.userId) {
     next();

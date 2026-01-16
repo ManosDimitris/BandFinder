@@ -40,11 +40,91 @@ router.post('/login', async (req, res) => {
 }); 
 
 
-router.get('/profile', isAuthenticated, (req, res) => {
-  res.json({ 
-    authenticated: true,
-    user: req.session.user 
-  });
+router.get('/profile', isAuthenticated, async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const [users] = await database.query(
+      'SELECT user_id, username, email, password, firstname, lastname, address, telephone FROM users WHERE user_id = ?',
+      [userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = users[0];
+    res.json({ 
+      authenticated: true,
+      user: {
+        user_id: user.user_id,
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        address: user.address,
+        telephone: user.telephone
+      }
+    });
+  } catch (err) {
+    console.error('Profile fetch error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/profile', isAuthenticated, async (req, res) => {
+  try {
+    const { username, email, password, firstName, lastName, address, phone } = req.body;
+    const userId = req.session.userId;
+
+    if (!username) {
+      return res.status(400).json({ error: 'Username is required' });
+    }
+
+    let updateQuery = 'UPDATE users SET username = ?';
+    let params = [username];
+
+    if (password) {
+      updateQuery += ', password = ?';
+      params.push(password);
+    }
+
+    if (firstName) {
+      updateQuery += ', firstname = ?';
+      params.push(firstName);
+    }
+
+    if (lastName) {
+      updateQuery += ', lastname = ?';
+      params.push(lastName);
+    }
+
+    if (address) {
+      updateQuery += ', address = ?';
+      params.push(address);
+    }
+
+    if (phone) {
+      updateQuery += ', telephone = ?';
+      params.push(phone);
+    }
+
+    updateQuery += ' WHERE user_id = ?';
+    params.push(userId);
+
+    await database.query(updateQuery, params);
+
+    req.session.user.username = username;
+
+    res.json({ 
+      success: true, 
+      message: 'Profile updated successfully',
+      user: req.session.user
+    });
+  } catch (err) {
+    console.error('Profile update error:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.post('/logout', (req, res) => {
