@@ -8,13 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if(userDashboard) {  
     checkUserAuth();
     setupTabSwitching();
-    setupLogout();
+    Logout();
     setupProfileForm();
   }
 
 });
-
-
 
 async function handleUserLogin() {
     const form = document.getElementById('userLoginForm');
@@ -116,7 +114,7 @@ function setupTabSwitching() {
   });
 }
 
-function setupLogout() {
+function Logout() {
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
@@ -126,7 +124,7 @@ function setupLogout() {
         });
         
         if (response.ok) {
-          window.location.href = '/user-login';
+          window.location.href = '/';
         }
       } catch (error) {
         console.error('Logout error:', error);
@@ -236,4 +234,4 @@ function setupPasswordToggle() {
       }
     });
   }
-}  
+}

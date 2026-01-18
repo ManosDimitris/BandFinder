@@ -1,0 +1,250 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: #f7f7f7;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    padding: 2em 4em;
+}
+
+.main-nav{
+    display: flex;
+    justify-content: space-between;
+    background: #231f20;
+    padding: 2em;
+}
+
+.logo{
+    font-size: 24px;
+    font-weight: 700;
+    color : #f7f7f7;
+    padding-left: 2em;
+}
+
+.nav-links{
+    display: flex;
+    align-items: center;
+    padding-right: 4em;
+    gap: 3em;
+}
+
+.nav-links a{
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 700;
+    color : #f7f7f7;
+}
+
+.nav-links a:hover{
+    color: #007bff;
+    transition: color 0.3s;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2em;
+    margin: 3em 0;
+}
+
+.features .header {
+    grid-column: 1 / -1;
+}
+
+.features h2 {
+    font-size: 2em;
+    color: #231f20;
+    text-align: center;
+    font-weight: 450;
+}
+
+.feature h3 {
+    font-size: 1.3em;
+    color: #231f20;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+.feature p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.events-list, .bands-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.event-item, .band-item {
+    background: #231f20;
+    padding: 1.5em;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+}
+
+.event-item:hover, .band-item:hover {
+    background: #3a3435;
+    transition: background-color 0.3s;
+}
+
+.event-image, .band-image {
+    width: 100px;
+    height: 100px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.event-image img, .band-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-content, .band-content {
+    flex: 1;
+}
+
+.event-name, .band-name {
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.4em;
+    font-size: 1.1em;
+}
+
+.event-date, .event-location {
+    font-size: 0.9em;
+    color: #cccccc;
+    margin: 0.3em 0;
+}
+
+.event-content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5em;
+  }
+  
+  .info-section {
+    flex: 1;
+  }
+  
+  .EventDetails {
+    flex-shrink: 0;
+  }
+  
+  .EventDetails a {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bolder;
+    color: #2790ff;
+    padding: 0.5em 1em;
+  }
+  
+  .EventDetails a:hover {
+    color: #b9dbff;
+    text-decoration: underline;  
+}
+
+.band-rating {
+    font-size: 0.9em;
+    color: #007bff;
+    font-weight: 600;
+}
+
+.loading {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2em;
+    margin-top: 2em;
+}
+
+.action-card {
+    background: white;
+    padding: 2em;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #231f20;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.footer {
+    background: #231f20;
+    color: #f7f7f7;
+    padding: 2em;
+    margin-top: 3em;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-links {
+    display: flex;
+    gap: 2em;
+}
+
+.footer-links a {
+    color: #f7f7f7;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .features {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 1em;
+        text-align: center;
+    }
+}

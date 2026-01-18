@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = 3000; 
-const HOST = '0.0.0.0'; 
+const HOST = 'localhost'; 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +31,7 @@ const adminRoutes = require('./routes/adminRoutes');
 
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api', require('./routes/main'));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", "index.html"));
@@ -58,4 +59,3 @@ app.listen(PORT, HOST, () => {
   console.log(`User login: http://${HOST}:${PORT}/user-login`);
 });
 
-  
