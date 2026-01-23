@@ -56,4 +56,13 @@ router.get('/bands/new', async (req, res) => {
   }
 });
 
+
+router.get('/bands/:id', async (req, res) => {
+});
+
+
+
+router.get('/event/:id', async (req, res) => {
+});
+
 module.exports = router;

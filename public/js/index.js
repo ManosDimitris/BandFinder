@@ -86,7 +86,7 @@ async function loadUpcomingEvents() {
 
 async function loadBestBands() {
   try {
-    const response = await fetch('/api/bands/new?limit=3');
+    const response = await fetch('/api/bands/new?limit=4');
     const bands = await response.json();
 
     const bandsList = document.getElementById('bestBandsList');
@@ -99,13 +99,27 @@ async function loadBestBands() {
         bandElement.className = 'band-item';
         bandElement.innerHTML = `
           <div class="band-image">
-            <img src="../assets/images/audience.jpg" alt="${band.band_name || 'Band'}">
+            <img src="../assets/images/bands.jpg" alt="${band.band_name || 'Band'}">
           </div>
           <div class="band-content">
             <div class="band-name">${band.band_name || 'Unknown Band'}</div>
-            <div class="band-rating">${rating}/5 (${band.review_count || 0} reviews)</div>
-            ${band.genre ? `<div style="font-size: 0.9em; color: #aaa;">Genre: ${band.genre}</div>` : ''}
-
+            <div class="band-description">
+              ${band.genre ? band.genre + ' band with ' : ''}${band.review_count || 0} reviews and counting. Experience their unique sound.
+            </div>
+            <div class="band-stats">
+              <div class="stat-item">
+                <div class="stat-number">${rating}</div>
+                <div class="stat-label">Rating</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">${band.review_count || 0}</div>
+                <div class="stat-label">Reviews</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">${band.foundedYear || '-'}</div>
+                <div class="stat-label">Year Founded</div>
+              </div>
+            </div>
           </div>
         `;
         bandsList.appendChild(bandElement);

@@ -53,6 +53,16 @@ app.get('/user-dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", 'user_dashboard.html'));
 });
 
+// Band detail page
+app.get('/band/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "pages", 'band_detail.html'));
+});
+
+// Event detail page
+app.get('/event/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "pages", 'event_detail.html'));
+});
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running on http://${HOST}:${PORT}`);
   console.log(`Admin login: http://${HOST}:${PORT}/admin-login`);
