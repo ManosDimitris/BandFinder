@@ -57,6 +57,8 @@ async function loadUpcomingEvents() {
 
         const eventElement = document.createElement('div');
         eventElement.className = 'event-item';
+        eventElement.style.cursor = 'pointer';
+        eventElement.onclick = () => window.location.href = `/event/${event.public_event_id}`;
         eventElement.innerHTML = `
           <div class="event-image">
             <img src = "../assets/images/audience.jpg" alt="${event.event_name || 'Event'}">
@@ -67,15 +69,13 @@ async function loadUpcomingEvents() {
               <div class="event-date">${formattedDate}</div>
               <div class="event-location">${event.location || 'Location TBA'}</div>
             </div>
-            <div class="EventDetails">
-              <a href="/event-details.html?id=${event.public_event_id}">Show Event</a>
+             <div class="EventDetails">
+              <a>Show Event</a>
             </div>
           </div>
         `;
         eventsList.appendChild(eventElement);
       });
-    } else {
-      eventsList.innerHTML = '<p class="loading">No upcoming events at the moment</p>';
     }
   } catch (error) {
     console.error('Error loading events:', error);
@@ -97,6 +97,8 @@ async function loadBestBands() {
         const rating = (band.average_rating || 0).toFixed(1);
         const bandElement = document.createElement('div');
         bandElement.className = 'band-item';
+        bandElement.style.cursor = 'pointer';
+        bandElement.onclick = () => window.location.href = `/band/${band.band_id}`;
         bandElement.innerHTML = `
           <div class="band-image">
             <img src="../assets/images/bands.jpg" alt="${band.band_name || 'Band'}">

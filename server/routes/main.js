@@ -19,7 +19,6 @@ router.get('/events/upcoming', async (req, res) => {
         event_city,
         participants_price
        FROM public_events 
-       WHERE event_datetime > NOW() 
        ORDER BY event_datetime ASC 
        LIMIT ?`,
       [Number(limit)]
@@ -54,15 +53,6 @@ router.get('/bands/new', async (req, res) => {
     console.error('Database error:', error);
     res.status(500).json({ error: 'An error occurred while fetching bands' });
   }
-});
-
-
-router.get('/bands/:id', async (req, res) => {
-});
-
-
-
-router.get('/event/:id', async (req, res) => {
 });
 
 module.exports = router;

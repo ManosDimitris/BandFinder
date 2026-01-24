@@ -10,6 +10,8 @@ const app = express();
 const PORT = 3000; 
 const HOST = 'localhost'; 
 
+app.use(express.static('public'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,6 +34,9 @@ const adminRoutes = require('./routes/adminRoutes');
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api', require('./routes/main'));
+app.use('/api/band', require('./routes/bandsRoutes'));
+app.use('/api/event', require('./routes/eventsRoutes'));
+
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", "index.html"));
@@ -53,14 +58,22 @@ app.get('/user-dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", 'user_dashboard.html'));
 });
 
-// Band detail page
+
 app.get('/band/:id', (req, res) => {
-  res.sendFile(path.join(__dirname, "../public", "pages", 'band_detail.html'));
+  res.sendFile(path.join(__dirname, "../public", "pages", 'bands.html'));
 });
 
-// Event detail page
+
 app.get('/event/:id', (req, res) => {
-  res.sendFile(path.join(__dirname, "../public", "pages", 'event_detail.html'));
+  res.sendFile(path.join(__dirname, "../public", "pages", 'events.html'));
+});
+
+app.get('/events.html', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "pages", 'events.html'));
+});
+
+app.get('/bands.html', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "pages", 'bands.html'));
 });
 
 app.listen(PORT, HOST, () => {

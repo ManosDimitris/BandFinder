@@ -142,4 +142,17 @@ router.post('/logout', (req, res) => {
   });
 });
 
+router.get('/events', async (req, res) => {
+  try{
+    const userId = req.session.userId;
+    const [events] = await database.query(
+      'SELECT * FROM private_events WHERE user_id = ?',
+      [userId]
+    );
+    res.json(events);
+  }catch(err){
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
 module.exports = router; 

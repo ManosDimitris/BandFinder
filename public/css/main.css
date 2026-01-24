@@ -230,7 +230,7 @@ main {
 .band-item:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(17, 17, 17, 0.15);
-    
+    cursor: pointer;
 }
 
 .band-image {
