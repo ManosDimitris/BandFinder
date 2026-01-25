@@ -180,6 +180,37 @@ router.get("/messages", isAuthenticated, async (req, res) => {
 });
 
 
+router.get("/reviews", isAuthenticated, async (req, res) => {
+  try {
+   
+    const userId = req.session.userId ;
+    
+   
+    const [users] = await database.query(
+      "SELECT username FROM users WHERE user_id = ?",
+      [userId]
+    );
+    
+    if (users.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    
+    const username = users[0].username;
+    
+ 
+    const [reviews] = await database.query(
+      "SELECT * FROM reviews WHERE sender = ? ORDER BY date_time DESC",
+      [username]
+    );
+    
+    res.json(reviews);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch reviews" });
+  }
+});
 
 
-module.exports = router; 
+
+
+module.exports = router;

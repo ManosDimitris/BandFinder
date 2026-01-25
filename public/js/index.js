@@ -140,7 +140,8 @@ async function loadBestBands() {
 window.initMap = function () {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 8,
-    center: { lat: 35.3387, lng: 25.1442 }
+    center: { lat: 35.3387, lng: 25.1442 },
+    width : '80%',
   });
 
   loadEventMap();

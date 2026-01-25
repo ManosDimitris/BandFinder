@@ -5,11 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Band Details</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/band.css">
+    <link rel="stylesheet" href="/css/bands.css">
 </head>
 <body>
-    <div id="bandContainer">
-        <p class="loading">Loading band details...</p>
-    </div>
+    <nav id="mainNav" class="main-nav">
+        <div class="logo">
+            <a href="/pages/index.html" >Band Finder</a>
+          </div>
+    
+        <!-- FOR VISITORS -->
+        <div id="guestNav" class="nav-links" style="display: none;">
+          <a href="/bands.html">Bands</a>
+          <a href="/events.html">Events</a>
+          <a href="/user-login" class="btn-login">Login</a>
+          <a href="/register.html" class="btn-register">Register</a>
+        </div>
+    
+        <!-- FOR LOGGED IN USERS -->
+        <div id="userNav" class="nav-links" style="display: none;">
+          <a href="/bands.html">Bands</a>
+          <a href="/events.html">Events</a>
+          <a href="/user-dashboard" class="btn-dashboard">My Dashboard</a>
+        </div>
+      </nav>
+
+    <div class="bands-container">
+        <header class="bands-header">
+          <h1>Find The Perfect Band</h1>
+          <p>Browse and book bands for your events</p>
+        </header>
+    
+        <div class="bands-main">
+          <aside class="filters-sidebar">
+            <h3>Filter Bands</h3>
+            
+            <div class="filter-group">
+              <label for="musicGenre">Music Genre</label>
+              <select id="musicGenre">
+                <option value="">All Genres</option>
+                <option value="rock">Rock</option>
+                <option value="pop">Pop</option>
+                <option value="jazz">Jazz</option>
+                <option value="classical">Classical</option>
+                <option value="blues">Blues</option>
+                <option value="metal">Metal</option>
+                <option value="electronic">Electronic</option>
+                <option value="house">House</option>
+                <option value="Funk">Funk</option>
+              </select>
+            </div>
+    
+            <div class="filter-group">
+              <label for="foundedYear">Founded Year</label>
+              <input type="number" id="foundedYear" placeholder="example: 2015" min="1900" max="2099">
+            </div>
+    
+            <div class="filter-group">
+              <label for="city">City</label>
+              <input type="text" id="city" placeholder="Search by city...">
+            </div>
+    
+            <button id="applyBtn" class="btn-apply-filters">Apply Filters</button>
+            <button id="resetBtn" class="btn-reset-filters">Reset Filters</button>
+          </aside>
+    
+          <section class="bands-grid-section">
+            <div id="bandsGrid" class="bands-grid">
+            
+            </div>
+          </section>
+        </div>
+      </div>
+    
+
+
+    <script src="../js/index.js"></script>
     <script src="../js/bands.js"></script>
 </body>
 </html>

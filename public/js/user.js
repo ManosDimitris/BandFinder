@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupProfileForm();
     loadProfileEvents();
     loadMessages();
+    loadReviews();
   }
 });
 
@@ -290,19 +291,19 @@ async function loadProfileEvents() {
 }
 
 async function loadMessages() {
-  const messagesContainer = document.getElementById("messages");
+  const messagesContainer = document.getElementById("messagesContainer");
   if (messagesContainer) {
     try {
       const response = await fetch("/api/user/messages");
       if (!response.ok) {
-        messagesContainer.innerHTML = "<p>Failed to load messages.</p>";
+        messagesContainer.innerHTML = "Failed to load messages";
         return;
       }
 
       const data = await response.json();
 
       if (!data || data.length === 0) {
-        messagesContainer.innerHTML = "<p>No messages.</p>";
+        messagesContainer.innerHTML = "No messages";
         return;
       }
 
@@ -315,34 +316,126 @@ async function loadMessages() {
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#039;');
       }
+    
+      const messagesByBand = {};
+      data.forEach((message) => {
+        const bandName = message.band_name || 'Unknown Band';
+        if (!messagesByBand[bandName]) {
+          messagesByBand[bandName] = [];
+        }
+        messagesByBand[bandName].push(message);
+      });
 
-      const messageSection = messagesContainer.querySelector('.message-section');
-      if (messageSection) {
-        messageSection.innerHTML = '';
-        data.forEach((message) => {
+      messagesContainer.innerHTML = '';
+
+      for (let bandName in messagesByBand) {
+        const bandMessages = messagesByBand[bandName];
+      
+        const bandGroup = document.createElement('div');
+        bandGroup.className = 'band-message-group';
+      
+        const bandHeader = document.createElement('div');
+        bandHeader.className = 'band-message-header';
+        bandHeader.innerHTML = `
+          <span class="band-name">${escapeHtml(bandName)}</span>
+          <button class="expand-btn collapsed">Expand</button>
+        `;
+      
+        const bandContent = document.createElement('div');
+        bandContent.className = 'band-message-content collapsed';
+      
+        const messageSection = document.createElement('div');
+        messageSection.className = 'message-section';
+      
+        bandMessages.forEach((message) => {
           const row = document.createElement('div');
           let name = '';
-          if(message.sender === 'band'){
-            name = message.band_name;
-          }else{
+          let color = '';
+          if (message.sender === 'band') {
+            name = bandName;
+            color = '#111';
+          } else {
             name = 'You';
+            color = '#007fff';
           }
           row.className = 'message-row';
           row.innerHTML = `
-              <div class="message-sender">
-                <div class="sender-name"><em>${escapeHtml(name)}</em></div>
-                <div class="sender-date">${new Date(message.date_time).toLocaleString()}</div>
-              </div>
-              <div class="message-body">
-                <div class="message-bubble">${escapeHtml(message.message)}</div>
-              </div>
-            `;
+            <div class="message-sender">
+              <div class="sender-name"><em>${escapeHtml(name)}</em></div>
+              <div class="sender-date">${new Date(message.date_time).toLocaleString()}</div>
+            </div>
+            <div class="message-body">
+              <div class="message-bubble" style="color: ${color};">${escapeHtml(message.message)}</div>
+            </div>
+          `;
           messageSection.appendChild(row);
         });
+      
+        bandContent.appendChild(messageSection);
+        bandGroup.appendChild(bandHeader);
+        bandGroup.appendChild(bandContent);
+      
+        const expandBtn = bandHeader.querySelector('.expand-btn');
+        expandBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          bandContent.classList.toggle('collapsed');
+          expandBtn.classList.toggle('collapsed');
+          expandBtn.classList.toggle('expanded');
+        });
+      
+        messagesContainer.appendChild(bandGroup);
       }
+
     } catch (error) {
       console.error("Load messages error:", error);
       messagesContainer.innerHTML = "<p>Failed to load messages.</p>";
+    }
+  }
+}
+
+async function loadReviews() {
+  const reviewsContainer = document.getElementById("reviewsContainer");
+  if (reviewsContainer) {
+    try {
+      const response = await fetch("/api/user/reviews");
+      if (!response.ok) {
+        reviewsContainer.innerHTML = "Failed to load reviews";
+        return;
+      }
+      const data = await response.json();
+
+      if (!data || data.length === 0) {
+        reviewsContainer.innerHTML = "<p>No reviews available.</p>";
+        return;
+      }
+      reviewsContainer.innerHTML = "";
+      data.forEach((review) => {
+        const reviewDiv = document.createElement("div");
+        reviewDiv.classList.add("review-item");
+        reviewDiv.innerHTML = `
+          <div class="review-card">
+            <div class="review-header">
+              <h3>${review.band_name || 'Unknown Band'}</h3>  
+              <div class="review-rating">
+                <p class="info rating">
+                  <strong>Rating:</strong> ${review.rating} / 5
+                </p>
+              </div>
+            </div>
+            <div class="review-details">
+              <p class = "info"><strong>Reviewer:</strong> ${review.sender || 'Unknown'}</p>
+              <p class = "info"><strong>Date:</strong> ${new Date(
+          review.date_time
+        ).toLocaleDateString()}</p>
+              <p class = "info"><strong>Review:</strong> ${review.review
+          }</p>
+            </div>
+          </div>   `;
+        reviewsContainer.appendChild(reviewDiv);
+      });
+    }catch (error) {
+      console.error("Load reviews error:", error);
+      reviewsContainer.innerHTML = "<p>Failed to load reviews.</p>";
     }
   }
 }

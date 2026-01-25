@@ -334,6 +334,12 @@ main {
     gap: 3em;
 }
 
+
+.map-container{
+    width: 80%;
+    margin: 0 auto;
+}
+
 /* --------------=--------- */
 .footer {
     background: #231f20;

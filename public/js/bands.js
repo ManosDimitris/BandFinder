@@ -46,7 +46,7 @@ async function loadBandDetails(bandId) {
 
 async function loadBands() {
   try {
-    // API is mounted under /api/band in server (routes/bandsRoutes.js)
+  
     const response = await fetch("/api/bands");
     const bands = await response.json();
 
