@@ -142,7 +142,7 @@ router.post('/logout', (req, res) => {
   });
 });
 
-router.get('/events', async (req, res) => {
+router.get('/events', isAuthenticated, async (req, res) => {
   try{
     const userId = req.session.userId;
     const [events] = await database.query(
@@ -154,5 +154,32 @@ router.get('/events', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
+router.get("/messages", isAuthenticated, async (req, res) => {
+  try {
+    const userId = req.session.userId;
+
+    const [messages] = await database.query(
+      `
+      SELECT m.*, b.band_name
+      FROM messages m
+      JOIN private_events pe ON m.private_event_id = pe.private_event_id
+      JOIN bands b ON pe.band_id = b.band_id
+      WHERE pe.user_id = ?
+      ORDER BY m.date_time ASC
+      `,
+      [userId]
+    );
+
+    res.json(messages);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch messages" });
+  }
+});
+
+
+
 
 module.exports = router; 

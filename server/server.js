@@ -34,7 +34,7 @@ const adminRoutes = require('./routes/adminRoutes');
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api', require('./routes/main'));
-app.use('/api/band', require('./routes/bandsRoutes'));
+app.use('/api/bands', require('./routes/bandsRoutes'));
 app.use('/api/event', require('./routes/eventsRoutes'));
 
 

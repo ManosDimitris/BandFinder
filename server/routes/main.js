@@ -55,4 +55,26 @@ router.get('/bands/new', async (req, res) => {
   }
 });
 
+router.get('/events/map', async (req, res) => {
+  try {
+    const [events] = await db.query(
+      `SELECT 
+        public_event_id,
+        event_type as event_name,
+        event_datetime,
+        event_address as location,
+        event_city,
+        participants_price,
+        event_lat as lat,
+        event_lon as lon
+       FROM public_events
+       WHERE event_lat IS NOT NULL AND event_lon IS NOT NULL`
+    );
+    res.json(events || []);
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while fetching events for map' });
+  }
+});
+
 module.exports = router;

@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Logout();
     setupProfileForm();
     loadProfileEvents();
+    loadMessages();
   }
 });
 
@@ -268,14 +269,12 @@ async function loadProfileEvents() {
             </div>
             <div class="event-details">
               <p class = "info"><strong>Date:</strong> ${new Date(
-                event.event_datetime
-              ).toLocaleDateString()}</p>
-              <p class = "info"><strong>Location:</strong> ${
-                event.event_city
-              }, ${event.event_address}</p>
-              <p class = "info"><strong>Description:</strong> ${
-                event.event_description
-              }</p>
+          event.event_datetime
+        ).toLocaleDateString()}</p>
+              <p class = "info"><strong>Location:</strong> ${event.event_city
+          }, ${event.event_address}</p>
+              <p class = "info"><strong>Description:</strong> ${event.event_description
+          }</p>
             </div>
             <div class="event-price">
               <p class = "info"><strong>Price:</strong> <span class="price-amount">$${event.price}</p>
@@ -286,6 +285,64 @@ async function loadProfileEvents() {
     } catch (error) {
       console.error("Load events error:", error);
       eventsContainer.innerHTML = "<p>Failed to load events.</p>";
+    }
+  }
+}
+
+async function loadMessages() {
+  const messagesContainer = document.getElementById("messages");
+  if (messagesContainer) {
+    try {
+      const response = await fetch("/api/user/messages");
+      if (!response.ok) {
+        messagesContainer.innerHTML = "<p>Failed to load messages.</p>";
+        return;
+      }
+
+      const data = await response.json();
+
+      if (!data || data.length === 0) {
+        messagesContainer.innerHTML = "<p>No messages.</p>";
+        return;
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      const messageSection = messagesContainer.querySelector('.message-section');
+      if (messageSection) {
+        messageSection.innerHTML = '';
+        data.forEach((message) => {
+          const row = document.createElement('div');
+          let name = '';
+          if(message.sender === 'band'){
+            name = message.band_name;
+          }else{
+            name = 'You';
+          }
+          row.className = 'message-row';
+          row.innerHTML = `
+              <div class="message-sender">
+                <div class="sender-name"><em>${escapeHtml(name)}</em></div>
+                <div class="sender-date">${new Date(message.date_time).toLocaleString()}</div>
+              </div>
+              <div class="message-body">
+                <div class="message-bubble">${escapeHtml(message.message)}</div>
+              </div>
+            `;
+          messageSection.appendChild(row);
+        });
+      }
+    } catch (error) {
+      console.error("Load messages error:", error);
+      messagesContainer.innerHTML = "<p>Failed to load messages.</p>";
     }
   }
 }

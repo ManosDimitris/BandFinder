@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function loadEvents() {
   try {
-    const response = await fetch('/api/events/upcoming');
+    const response = await fetch('/api/events/upcoming?limit=100');
     const events = await response.json();
 
     const container = document.getElementById("eventContainer");

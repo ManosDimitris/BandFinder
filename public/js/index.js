@@ -4,21 +4,22 @@ document.addEventListener('DOMContentLoaded', async function() {
   await loadBestBands();
 });
 
+let map;
+
+
 async function checkAuthentication() {
   try {
     const response = await fetch('/api/user/profile');
-    const data = await response.json();
 
     const guestNav = document.getElementById('guestNav');
     const userNav = document.getElementById('userNav');
     const userFeatures = document.getElementById('userFeatures');
 
+    const data = await response.json();
+
     if (data.authenticated && data.user) {
-      
       if (guestNav) guestNav.style.display = 'none';
-      if (userNav) {
-        userNav.style.display = 'flex';
-      }
+      if (userNav) userNav.style.display = 'flex';
       if (userFeatures) userFeatures.style.display = 'block';
     } else {
       if (guestNav) guestNav.style.display = 'flex';
@@ -136,3 +137,54 @@ async function loadBestBands() {
   }
 }
 
+window.initMap = function () {
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 8,
+    center: { lat: 35.3387, lng: 25.1442 }
+  });
+
+  loadEventMap();
+}
+
+async function loadEventMap() {
+  try {
+    const res = await fetch("/api/events/map");
+    const events = await res.json();
+
+    events.forEach(event => {
+      const marker = new google.maps.Marker({
+        position: {
+          lat: Number(event.lat),
+          lng: Number(event.lon)
+        },
+        map: map,
+        title: event.event_name
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `
+        <a href="/event/${event.public_event_id}" style="text-decoration:none; color:black;">
+         <div style="max-width:200px; 
+              display:flex; 
+              flex-direction:column; 
+              align-items:center; 
+              cursor:pointer;">
+            <img src="../assets/images/audience.jpg" style="width:70%; border-radius:6px; margin-bottom:6px;"/>
+            <strong>${event.event_name}</strong><br>
+            ${event.event_city}<br>
+            ${event.location}<br>
+            ${new Date(event.event_datetime).toLocaleDateString()}
+          ,</div>
+        </a>
+        `
+      });
+
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
+    });
+
+  } catch (err) {
+    console.error("Map loading failed:", err);
+  }
+}

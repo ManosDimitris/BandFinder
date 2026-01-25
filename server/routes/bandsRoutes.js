@@ -2,7 +2,24 @@ const express = require('express');
 const router = express.Router();
 const database = require('../config/database');
 
-router.get('/bands', async (req, res) => {
+router.get('/', async (req, res) => {
+  try {
+    const [bands] = await database.query(
+      `SELECT 
+        band_id,
+        band_name,
+        music_genres as genre,
+        foundedYear,
+        band_description,
+        members_number,
+        band_city
+       FROM bands`
+    );
+    res.json(bands);
+  }catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while getting the bands' });
+  }
 });
 
 router.get('/:id', async (req, res) => {

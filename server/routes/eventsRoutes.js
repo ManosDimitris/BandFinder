@@ -3,10 +3,6 @@ const router = express.Router();
 const database = require('../config/database');
 
 
-router.get('/events', async (req, res) => {
-
-});
-
 router.get('/:id', async (req, res) => {
   try {
     const eventId = req.params.id;

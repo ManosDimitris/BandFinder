@@ -288,6 +288,7 @@ body {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+
 .dashboard-section.active-tab {
   display: block;
   opacity: 1;
@@ -474,5 +475,71 @@ body {
 }
 
 
+/* FOR MESSAGES */
+.messages {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
 
+.messages-section{
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
 
+/* Messenger-style message rows */
+.message-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.message-sender {
+  width: 220px;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sender-name {
+  font-weight: 700;
+  color: #222;
+}
+
+.sender-date {
+  font-size: 12px;
+  color: #777;
+}
+
+.message-body {
+  flex: 1;
+}
+
+.message-bubble {
+  background: #f1f0f0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #111;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .message-row {
+    flex-direction: column;
+  }
+  .message-sender {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 6px;
+  }
+}

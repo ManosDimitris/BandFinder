@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Band Finder - Home</title>
   <link rel="stylesheet" href="../css/main.css">
 </head>
+
 <body>
- 
-  <nav id="mainNav" class = "main-nav">
+
+  <nav id="mainNav" class="main-nav">
     <div class="logo">Band Finder</div>
-    
+
     <!-- FOR VISITORS -->
     <div id="guestNav" class="nav-links" style="display: none;">
       <a href="/bands.html">Bands</a>
@@ -16,7 +18,7 @@
       <a href="/user-login" class="btn-login">Login</a>
       <a href="/register.html" class="btn-register">Register</a>
     </div>
-    
+
     <!-- FOR LOGGED IN USERS -->
     <div id="userNav" class="nav-links" style="display: none;">
       <a href="/bands.html">Bands</a>
@@ -41,9 +43,10 @@
           <p class="loading">Loading bands...</p>
         </div>
       </div>
-      <div class="feature">
-        <h3>Event Map</h3>
-        <p>View events on an interactive map</p>
+      <div class="map-container">
+        <h1>Public Events Map</h1>
+        <div id="map">Loading map...</div>
+        <p class="loading-msg">Events will appear as markers on the map. Click a marker for details.</p>
       </div>
     </section>
 
@@ -68,5 +71,7 @@
   </footer>
 
   <script src="../js/index.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAE4OFJItUe9PRSrlpfRPTEf0bxuPx-z2k&callback=initMap&loading=async" async></script>
 </body>
+
 </html>
