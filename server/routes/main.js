@@ -41,8 +41,9 @@ router.get('/bands/new', async (req, res) => {
     const [bands] = await db.query(`
       SELECT b.band_id,
         b.band_name,
-        b.music_genres as genre,
-        b.foundedYear
+        b.music_genres ,
+        b.foundedYear,
+        b.band_description
       FROM bands b
       ORDER BY b.foundedYear DESC
       LIMIT ?`,

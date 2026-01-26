@@ -54,3 +54,260 @@ main {
     color: #007bff;
     transition: color 0.3s;
 }
+
+.bands-header {   
+    margin: 0 2em; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1em;
+    border-bottom: 1px solid #c5c5c5;
+}
+
+.bands-header h1{
+    font-weight: bold;
+    color: #007bff;
+}
+
+.bands-header p{
+    font-weight: 600;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.bands-main{
+    margin-top: 1em;
+    display: flex;
+    gap: 2em;
+}
+
+.filters-sidebar {
+    margin-top: 2em;
+    width: 280px;
+    background: #ffffff;
+    padding: 2em;
+    border-radius: 15px;
+    box-shadow: 4px 5px 11px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f0f0f0;
+    height: 60vh;
+
+}
+
+.filters-sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 1.5em;
+    font-size: 1.3em;
+    color: #333;
+    border-bottom: 2px solid #4A90E2;
+    padding-bottom: 0.5em;
+}
+
+.filter-group {
+    margin-bottom: 1.5em;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    padding: 0.7em;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: #4A90E2;
+}
+
+.filter-group input::placeholder {
+    color: #b4b4b4;
+}
+
+.btn-apply-filters,
+.btn-reset-filters {
+    width: 100%;
+    padding: 0.8em;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bolder;
+    font-size: 0.86em;
+}
+
+.btn-apply-filters {
+    background: #4A90E2;
+    color: white;
+    margin-bottom: 0.8em;
+}
+
+.btn-apply-filters:hover {
+    background: #357ABD;
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
+}
+
+.btn-reset-filters {
+    background: #f5f5f5;
+    color: #666;
+    border: 1px solid #ddd;
+}
+
+.btn-reset-filters:hover {
+    background: #e8e8e8;
+    color: #333;
+}
+
+.bands-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2em;
+    margin: 2em;
+    flex: 1;
+}
+
+.band-item{
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    min-width: 280px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    background-color: #231f20;
+    color : #f7f7f7;
+}
+
+
+.band-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.band-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.band-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.band-timestamp {
+    font-size: 11px;
+    color: #007bff;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.5em;
+}
+
+.band-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f7f7f7;
+    margin-bottom: 8px;
+    min-height: 40px;
+}
+
+.band-description {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 0.4em;
+}
+
+.band-stats {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding-left: 0.4em;
+}
+
+.stat-number {
+    font-size: 16px;
+    font-weight: 700;
+    color: #007bff;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: #f7f7f7;
+text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.band-genre {
+    font-size: 14px;
+    font-weight: bold;
+    color: #f7f7f7;
+    font-style: italic;
+}
+
+.band-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 0.4em;
+}
+
+.band-btn-view,
+.band-btn-request,
+.band-btn-login {
+    flex: 1;
+    padding: 0.4em;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.85em;
+}
+
+.band-btn-view {
+    background: #f0f0f0;
+    color: #1f1f1f;
+}
+
+.band-btn-request {
+    background: #007bff;
+    color: #f7f7f7;
+}
+
+
+.band-btn-request:disabled {
+    background: #f7f7f7;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.band-btn-login {
+    color: #007bff;
+}
+
+.bands-list{
+    display: -webkit-box;
+    gap: 3em;
+}

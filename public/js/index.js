@@ -6,18 +6,16 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 let map;
 
-
 async function checkAuthentication() {
   try {
     const response = await fetch('/api/user/profile');
+    const data = await response.json();
 
     const guestNav = document.getElementById('guestNav');
     const userNav = document.getElementById('userNav');
     const userFeatures = document.getElementById('userFeatures');
 
-    const data = await response.json();
-
-    if (data.authenticated && data.user) {
+    if (response.ok && data.authenticated && data.user) {
       if (guestNav) guestNav.style.display = 'none';
       if (userNav) userNav.style.display = 'flex';
       if (userFeatures) userFeatures.style.display = 'block';
@@ -39,10 +37,15 @@ async function checkAuthentication() {
 
 async function loadUpcomingEvents() {
   try {
+    const eventsList = document.getElementById('upcomingEventsList');
+    if (!eventsList) {
+      console.warn('upcomingEventsList element not found');
+      return;
+    }
+
     const response = await fetch('/api/events/upcoming?limit=4');
     const events = await response.json();
 
-    const eventsList = document.getElementById('upcomingEventsList');
     eventsList.innerHTML = '';
 
     if (events && events.length > 0) {
@@ -62,35 +65,44 @@ async function loadUpcomingEvents() {
         eventElement.onclick = () => window.location.href = `/event/${event.public_event_id}`;
         eventElement.innerHTML = `
           <div class="event-image">
-            <img src = "../assets/images/audience.jpg" alt="${event.event_name || 'Event'}">
+            <img src="../assets/images/audience.jpg" alt="${event.event_name || 'Event'}">
           </div>
           <div class="event-content">
-            <div class = "info-section">
+            <div class="info-section">
               <div class="event-name">${event.event_name || 'Unnamed Event'}</div>
               <div class="event-date">${formattedDate}</div>
               <div class="event-location">${event.location || 'Location TBA'}</div>
             </div>
-             <div class="EventDetails">
+            <div class="EventDetails">
               <a>Show Event</a>
             </div>
           </div>
         `;
         eventsList.appendChild(eventElement);
       });
+    } else {
+      eventsList.innerHTML = '<p class="loading">No upcoming events</p>';
     }
   } catch (error) {
     console.error('Error loading events:', error);
     const eventsList = document.getElementById('upcomingEventsList');
-    eventsList.innerHTML = '<p class="loading">Could not load events</p>';
+    if (eventsList) {
+      eventsList.innerHTML = '<p class="loading">Could not load events</p>';
+    }
   }
 }
 
 async function loadBestBands() {
   try {
+    const bandsList = document.getElementById('bestBandsList');
+    if (!bandsList) {
+      console.warn('bestBandsList element not found');
+      return;
+    }
+
     const response = await fetch('/api/bands/new?limit=4');
     const bands = await response.json();
 
-    const bandsList = document.getElementById('bestBandsList');
     bandsList.innerHTML = '';
 
     if (bands && bands.length > 0) {
@@ -107,7 +119,7 @@ async function loadBestBands() {
           <div class="band-content">
             <div class="band-name">${band.band_name || 'Unknown Band'}</div>
             <div class="band-description">
-              ${band.genre ? band.genre + ' band with ' : ''}${band.review_count || 0} reviews and counting. Experience their unique sound.
+              ${band.band_description || 'No description available'}
             </div>
             <div class="band-stats">
               <div class="stat-item">
@@ -128,12 +140,14 @@ async function loadBestBands() {
         bandsList.appendChild(bandElement);
       });
     } else {
-      bandsList.innerHTML = '<p class="loading">No bands with ratings yet</p>';
+      bandsList.innerHTML = '<p class="loading">No bands available</p>';
     }
   } catch (error) {
     console.error('Error loading bands:', error);
     const bandsList = document.getElementById('bestBandsList');
-    bandsList.innerHTML = '<p class="loading">Could not load bands</p>';
+    if (bandsList) {
+      bandsList.innerHTML = '<p class="loading">Could not load bands</p>';
+    }
   }
 }
 
