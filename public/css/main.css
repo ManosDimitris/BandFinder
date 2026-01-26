@@ -309,6 +309,7 @@ main {
     align-items: center;
     gap: 4px;
     padding-left: 11px;
+    text-align: center;
 }
 
 .stat-number {

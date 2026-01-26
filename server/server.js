@@ -60,12 +60,12 @@ app.get('/user-dashboard', (req, res) => {
 
 
 app.get('/band/:id', (req, res) => {
-  res.sendFile(path.join(__dirname, "../public", "pages", 'bands.html'));
+  res.sendFile(path.join(__dirname, "../public", "pages", 'bandDetails.html'));
 });
 
 
 app.get('/event/:id', (req, res) => {
-  res.sendFile(path.join(__dirname, "../public", "pages", 'events.html'));
+  res.sendFile(path.join(__dirname, "../public", "pages", 'eventDetails.html'));
 });
 
 app.get('/events.html', (req, res) => {

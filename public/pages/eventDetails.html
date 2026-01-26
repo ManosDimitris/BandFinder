@@ -3,9 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Band Details</title>
+  <title>Event Details</title>
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/bands.css">
 </head>
 <body>
   <nav id="mainNav" class="main-nav">
@@ -23,27 +22,23 @@
     </div>
   </nav>
 
-  <main class="band-detail-page">
-    <section class="band-detail">
-      <div class="band-header">
-        <h1 id="bandName">Loading...</h1>
-        <a href="/bands.html" class="btn-apply">Back to bands</a>
+  <main class="event-detail-page">
+    <section class="event-detail">
+      <div class="event-header">
+        <h1 id="eventName">Loading...</h1>
+        <a href="/events.html" class="btn-apply">Back to events</a>
       </div>
 
-      <div id="bandInfo" class="band-info">
-        <p><strong>Genre:</strong> <span id="bandGenre">-</span></p>
-        <p><strong>Founded:</strong> <span id="bandFounded">-</span></p>
-        <p><strong>Members:</strong> <span id="bandMembers">-</span></p>
-        <p><strong>City:</strong> <span id="bandCity">-</span></p>
-        <div class="band-description">
-          <h3>Description</h3>
-          <p id="bandDescription">-</p>
-        </div>
+      <div id="eventInfo" class="event-info">
+        <p><strong>Date:</strong> <span id="eventDate">-</span></p>
+        <p><strong>Location:</strong> <span id="eventLocation">-</span></p>
+        <p><strong>City:</strong> <span id="eventCity">-</span></p>
+        <p><strong>Price:</strong> <span id="eventPrice">-</span></p>
       </div>
     </section>
   </main>
 
   <script src="/js/index.js"></script>
-  <script src="/js/bandDetails.js"></script>
+  <script src="/js/eventDetails.js"></script>
 </body>
 </html>

@@ -110,7 +110,7 @@ async function loadBands(filterGenre = "", filterYear = "", filterCity = "") {
         const isAvailable = band.available === 1 || band.available === true;
 
         let actionButtons = `
-          <button class="band-btn-view" onclick="openBandDetail('${band.band_id}')">View Profile</button>`;
+          <button class="band-btn-view" onclick="openBandDetail('${band.band_id}')">View Band</button>`;
 
         if (isUserAuthenticated) {
           actionButtons += `
@@ -123,7 +123,7 @@ async function loadBands(filterGenre = "", filterYear = "", filterCity = "") {
         bandElement.className = "band-item";
         bandElement.innerHTML = `
           <div class="band-image">
-            <img src="../assets/images/bands.jpg" alt="${
+            <img src="../assets/images/bands.jpg" alt="${ 
               band.band_name || "Band"
             }">
           </div>
@@ -167,8 +167,7 @@ async function loadBands(filterGenre = "", filterYear = "", filterCity = "") {
 }
 
 function openBandDetail(bandId) {
-  console.log("Opening band detail for:", bandId);
-
+  window.location.href = `/band/${bandId}`;
 }
 
 function requestPrivateEvent(bandId) {

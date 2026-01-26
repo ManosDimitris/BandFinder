@@ -484,7 +484,7 @@ body {
 
 .messages-section {
   display: flex;
-  flex-direction: column;
+  flex-direction: column ;
   gap: 1em;
 }
 
