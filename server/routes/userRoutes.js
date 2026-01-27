@@ -39,6 +39,36 @@ router.post('/login', async (req, res) => {
   }
 }); 
 
+router.post('/register', async (req, res) => {
+  try {
+    const { username, email, password, firstname, lastname, birthdate, gender, country, city, address, telephone, lat, lon } = req.body;
+
+    if (!username || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Username, email and password are required' });
+    }
+
+    // Check if user already exists
+    const [existingUsers] = await database.query('SELECT * FROM users WHERE email = ? OR username = ?', [email, username]);
+    
+    if (existingUsers.length > 0) {
+      return res.status(400).json({ success: false, message: 'Email or username already registered' });
+    }
+
+    await database.query(
+      `INSERT INTO users (username, email, password, firstname, lastname, birthdate, gender, country, city, address, telephone, lat, lon)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [username, email, password, firstname || '', lastname || '', birthdate || null, gender || null, country || '', city || '', address || '', telephone || '', lat || null, lon || null]
+    );
+
+    res.status(201).json({ 
+      success: true, 
+      message: 'Registration successful! You can now login.' 
+    });
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ success: false, message: 'Server error during registration', error: err.message });
+  }
+});
 
 router.get('/profile', isAuthenticated, async (req, res) => {
   try {

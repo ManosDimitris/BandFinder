@@ -155,7 +155,7 @@ router.put('/reviews/:reviewId/approve', isAdmin, async (req, res) => {
   try {
     await database.query(
       'UPDATE reviews SET status = ? WHERE review_id = ?',
-      ['approved', reviewId]
+      ['published', reviewId]
     );
     res.json({ message: 'Review approved successfully' });
   } catch (err) {

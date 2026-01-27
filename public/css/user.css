@@ -1,5 +1,4 @@
-/* Admin Login /Dashboard Styles */
-
+/* GLOBAL RESET */
 * {
   margin: 0;
   padding: 0;
@@ -10,37 +9,76 @@ body {
   font-family: "Segoe UI", sans-serif;
 }
 
-.user-login-container {
+/*  LOGIN PAGE STYLES  */
+
+body.login-page {
+  background: #f3f3f3;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  padding: 20px;
 }
 
-.login-box {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  padding: 40px;
+.login-tabs-container {
   width: 100%;
-  max-width: 34em;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
-.login-header {
+.login-tabs {
+  display: flex;
+  background: white;
+  border-radius: 15px 15px 0 0;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 20px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  background: #f8f9fa;
+}
+
+.tab-btn.active {
+  color: #007fff;
+  background: #f8f9fa;
+  border-bottom: 3px solid #007fff;
+}
+
+.tab-content {
+  background: white;
+  padding: 1em 2em;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+.login-title {
   text-align: center;
   margin-bottom: 30px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
 }
 
-.login-header h1 {
-  color: #1f1f1f;
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.login-header p {
-  color: #1f1f1f;
-  font-size: 14px;
-}
 
 .form-group {
   margin-bottom: 20px;
@@ -105,20 +143,43 @@ body {
   cursor: not-allowed;
 }
 
-.login-footer {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.login-footer a {
-  color: #667eea;
-  text-decoration: underline;
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin: 10px 0 20px;
+  color: #007fff;
+  text-decoration: none;
   font-size: 14px;
+  font-weight: 500;
 }
 
-/*------------USER DASHBOARD------------*/
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.switch-text {
+  text-align: center;
+  margin-top: 25px;
+  color: #666;
+  font-size: 15px;
+}
+
+.switch-text a {
+  color: #007fff;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.switch-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== USER DASHBOARD STYLES ===== */
+
 .user-dashboard {
   background: #f5f5f5;
+  min-height: 100vh;
 }
 
 .dashboard-header {
@@ -267,7 +328,6 @@ body {
 
 .Home:hover {
   color: #007fff;
-  transform: translateY(-2px);
   transform: scale(1.05);
 }
 
@@ -287,7 +347,6 @@ body {
   transform: translateY(10px);
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-
 
 .dashboard-section.active-tab {
   display: block;
@@ -380,7 +439,7 @@ body {
   flex: 1;
   padding: 12px 15px;
   border: 2px solid #d4d4d4;
-  border-right: none; /* 👈 hide right border */
+  border-right: none;
   border-radius: 6px 0 0 6px;
   font-size: 15px;
   font-family: "Segoe UI", sans-serif;
@@ -410,8 +469,7 @@ body {
   object-fit: contain;
 }
 
-
-/* THe Event Style */
+/* Event Style */
 .event-card {
   border-bottom: 1px solid #b1b1b1;
   padding: 16px;
@@ -431,7 +489,6 @@ body {
   font-weight: bolder;
 }
 
-
 .status[data-status="requested"] {
   color: #926e02;
 }
@@ -439,7 +496,6 @@ body {
 .status[data-status="to be done"] {
   color: #007fff;
 }
-
 
 .status[data-status="done"] {
   color: #155724;
@@ -451,7 +507,6 @@ body {
   color: #333;
   padding-bottom: 6px;
 }
-
 
 .event-details,
 .event-price,
@@ -474,8 +529,7 @@ body {
   color: #2e7d32;
 }
 
-
-/* FOR MESSAGES */
+/* Messages */
 .messages {
   background: transparent;
   border: none;
@@ -520,7 +574,6 @@ body {
   border-radius: 20px;
   cursor: pointer;
   font-size: 14px;
-
 }
 
 .expand-btn.collapsed::after {
@@ -541,7 +594,7 @@ body {
   display: none;
 }
 
-/* Messenger-style message rows */
+
 .message-section {
   display: flex;
   flex-direction: column;
@@ -598,4 +651,35 @@ body {
   padding: 20px;
   margin-bottom: 1em;
   background: #fafafa;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-main {
+    flex-direction: column;
+  }
+  
+  .dashboard-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .dashboard-content {
+    padding: 1em;
+  }
+  
+  .login-tabs-container {
+    margin: 20px auto;
+    padding: 0 10px;
+  }
+  
+  .tab-content {
+    padding: 30px 20px;
+  }
+  
+  .tab-btn {
+    padding: 15px;
+    font-size: 16px;
+  }
 }

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   await loadBestBands();
 });
 
+
 let map;
 
 async function checkAuthentication() {

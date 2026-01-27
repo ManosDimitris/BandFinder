@@ -1,14 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.getElementById("userLoginForm");
-  if (loginForm) {
-    handleUserLogin();
-  }
-
+  // LOGIN/SIGNUP 
+  setupLoginTabs();
+  handleUserLogin();
+  handleUserSignup();
+  
+  //DASHBOARD
   const userDashboard = document.getElementById("userDashboard");
   if (userDashboard) {
     checkUserAuth();
     setupTabSwitching();
-    Logout();
+    setupLogout();
     setupProfileForm();
     loadProfileEvents();
     loadMessages();
@@ -16,19 +17,92 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// 1. LOGIN TABS FUNCTIONALITY
+
+function setupLoginTabs() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanes = document.querySelectorAll('.tab-pane');
+  const goToSignup = document.getElementById('goToSignup');
+  const goToLogin = document.getElementById('goToLogin');
+  
+  if (tabBtns.length === 0) return;
+  
+  function switchTab(tabName) {
+   
+    tabBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabName);
+    });
+    
+ 
+    tabPanes.forEach(pane => {
+      pane.classList.toggle('active', pane.id === `${tabName}-tab`);
+    });
+    
+    const errorMsg = document.getElementById('errorMessage');
+    if (errorMsg) errorMsg.style.display = 'none';
+  }
+  
+ 
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+  
+  if (goToSignup) {
+    goToSignup.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab('signup');
+    });
+  }
+  
+  if (goToLogin) {
+    goToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchTab('login');
+    });
+  }
+  
+  
+  const forgotPassword = document.querySelector('.forgot-password');
+  if (forgotPassword) {
+    forgotPassword.addEventListener('click', function(e) {
+      e.preventDefault();
+      const email = prompt('Please enter your email to reset password:');
+      if (email) {
+        alert(`Password reset link will be sent to: ${email}\n(Feature not implemented)`);
+      }
+    });
+  }
+}
+
+
+// 2. USER LOGIN
+
 async function handleUserLogin() {
   const form = document.getElementById("userLoginForm");
+  if (!form) return;
+  
   const errorMessage = document.getElementById("errorMessage");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
+    const emailInput = document.getElementById("loginEmail") || document.getElementById("email");
+    const passwordInput = document.getElementById("loginPassword") || document.getElementById("password");
+    
+    if (!emailInput || !passwordInput) return;
+    
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
-    errorMessage.style.display = "none";
+    if (errorMessage) {
+      errorMessage.style.display = "none";
+    }
 
     if (!email || !password) {
+      if (errorMessage) {
+        errorMessage.textContent = "Please fill in all fields";
+        errorMessage.style.display = "block";
+      }
       return;
     }
 
@@ -44,21 +118,182 @@ async function handleUserLogin() {
       const data = await response.json();
 
       if (data.success) {
-        window.location.href = "/"; //GO TO HOME PAGE
+        window.location.href = "/";
       } else {
-        showError(data.message || "Login failed");
+        if (errorMessage) {
+          errorMessage.textContent = data.message || "Login failed";
+          errorMessage.style.display = "block";
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
-      showError("Network error. Try again!");
+      if (errorMessage) {
+        errorMessage.textContent = "Network error. Try again!";
+        errorMessage.style.display = "block";
+      }
     }
   });
+}
 
-  function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = "block";
+// 3. USER SIGNUP
+
+async function handleUserSignup() {
+  const form = document.getElementById("signupForm");
+  if (!form) return;
+  
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    
+    // Get values, handling missing elements gracefully
+    const getFieldValue = (id) => {
+      const element = document.getElementById(id);
+      return element ? element.value.trim() : '';
+    };
+    
+    const username = getFieldValue("signupUsername");
+    const email = getFieldValue("signupEmail");
+    const password = getFieldValue("signupPassword");
+    const confirmPassword = getFieldValue("confirmPassword");
+    const firstname = getFieldValue("firstName");
+    const lastname = getFieldValue("lastName");
+    const birthdate = getFieldValue("birthdate");
+    const gender = getFieldValue("gender");
+    const country = getFieldValue("country");
+    const city = getFieldValue("userCity");
+    const address = getFieldValue("userAddress");
+    const telephone = getFieldValue("userPhone");
+    
+    const errorMessage = document.getElementById("signupErrorMessage");
+
+    if (errorMessage) {
+      errorMessage.style.display = "none";
+      errorMessage.textContent = "";
+    }
+    
+    // Only validate required fields: username, email, password, confirmPassword
+    if (!username || !email || !password || !confirmPassword) {
+      showSignupError("Please fill in all required fields (*): Username, Email, Password, Confirm Password");
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      showSignupError("Passwords do not match");
+      return;
+    }
+    
+    if (password.length < 6) {
+      showSignupError("Password must be at least 6 characters");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showSignupError("Please enter a valid email address");
+      return;
+    }
+
+    const submitBtn = form.querySelector('.login-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Creating account...';
+    submitBtn.disabled = true;
+    
+    try {
+    
+      let lat = null;
+      let lon = null;
+      if (address) {
+        const coords = await getCoordinates(address);
+        if (coords) {
+          lat = coords.lat;
+          lon = coords.lon;
+        }
+      }
+    
+      const response = await fetch('/api/user/register', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          username,
+          email, 
+          password,
+          firstname: firstname || null,
+          lastname: lastname || null,
+          birthdate: birthdate || null,
+          gender: gender || null,
+          country: country || null,
+          city: city || null,
+          address: address || null,
+          telephone: telephone || null,
+          lat,
+          lon
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+       
+        if (errorMessage) {
+          errorMessage.style.display = "block";
+          errorMessage.style.background = "#e8f5e9";
+          errorMessage.style.color = "#2e7d32";
+          errorMessage.style.borderLeft = "4px solid #2e7d32";
+          errorMessage.textContent = 'Account created successfully! Redirecting to login...';
+        }
+        
+        setTimeout(() => {
+          const loginTab = document.querySelector('.tab-btn[data-tab="login"]');
+          if (loginTab) {
+            loginTab.click();
+          
+            const loginEmail = document.getElementById("loginEmail");
+            if (loginEmail) loginEmail.value = email;
+          }
+        }, 2000);
+        
+      } else {
+        showSignupError(data.message || 'Registration failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      showSignupError('Network error. Please try again.');
+    } finally {
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+  
+  function showSignupError(message) {
+    const errorMessage = document.getElementById("signupErrorMessage");
+    if (errorMessage) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = "block";
+      errorMessage.style.background = "#fee";
+      errorMessage.style.color = "#c33";
+      errorMessage.style.borderLeft = "4px solid #c33";
+    }
   }
 }
+
+async function getCoordinates(address) {
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!data.length) return null;
+    return {
+      lat: parseFloat(data[0].lat),
+      lon: parseFloat(data[0].lon)
+    };
+  } catch (err) {
+    console.error('Coordinate fetch error:', err);
+    return null;
+  }
+}
+
+// 4. DASHBOARD FUNCTIONS
 
 async function checkUserAuth() {
   try {
@@ -68,7 +303,7 @@ async function checkUserAuth() {
     if (!response.ok || !data.authenticated) {
       window.location.href = "/user-login";
     } else {
-      console.log("User authenticated!!!!AIDA", data.user.username);
+      console.log("User authenticated:", data.user.username);
       document.getElementById("usernameDisplay").textContent =
         data.user.username;
       document.getElementById("userNameSidebar").textContent =
@@ -117,7 +352,7 @@ function setupTabSwitching() {
   });
 }
 
-function Logout() {
+function setupLogout() {
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {

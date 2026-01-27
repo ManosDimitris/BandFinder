@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Band Details</title>
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/bands.css">
+  <link rel="stylesheet" href="/css/bandDetails.css">
 </head>
 <body>
   <nav id="mainNav" class="main-nav">
@@ -26,19 +26,39 @@
   <main class="band-detail-page">
     <section class="band-detail">
       <div class="band-header">
-        <h1 id="bandName">Loading...</h1>
         <a href="/bands.html" class="btn-apply">Back to bands</a>
       </div>
 
       <div id="bandInfo" class="band-info">
-        <p><strong>Genre:</strong> <span id="bandGenre">-</span></p>
-        <p><strong>Founded:</strong> <span id="bandFounded">-</span></p>
-        <p><strong>Members:</strong> <span id="bandMembers">-</span></p>
-        <p><strong>City:</strong> <span id="bandCity">-</span></p>
-        <div class="band-description">
-          <h3>Description</h3>
-          <p id="bandDescription">-</p>
+        <div class="hero">
+          <h1 id="bandName">Loading...</h1>
+          <img id="bandImage" src="../assets/images/bands.jpg" />
         </div>
+        <div class="details">
+          <p><strong>Genre:</strong> <span id="bandGenre"></span></p>
+          <p><strong>Founded:</strong> <span id="bandFounded"></span></p>
+          <p><strong>Members:</strong> <span id="bandMembers"></span></p>
+          <p><strong>City:</strong> <span id="bandCity"></span></p>
+          <div class="band-description">
+            <h3>Description</h3>
+            <p id="bandDescription"></p>
+          </div>
+        </div>
+      </div>
+        <div class="upcoming-events">
+          <h3>Upcoming Events</h3>
+          <p id="upcoming-events"></p>
+        </div>
+        <div class="past-events">
+          <h3>Past Events</h3>
+          <p id="past-events"></p>
+        </div>
+      </div>
+      <div class="Review" id="reviewsSection">
+        
+      </div>
+      <div class="RequestEvent" id ="requestEventSection">
+
       </div>
     </section>
   </main>

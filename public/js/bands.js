@@ -107,14 +107,13 @@ async function loadBands(filterGenre = "", filterYear = "", filterCity = "") {
 
       bands.forEach((band) => {
         const rating = (band.average_rating || 0).toFixed(1);
-        const isAvailable = band.available === 1 || band.available === true;
 
         let actionButtons = `
           <button class="band-btn-view" onclick="openBandDetail('${band.band_id}')">View Band</button>`;
 
         if (isUserAuthenticated) {
           actionButtons += `
-            <button class="band-btn-request" onclick="requestPrivateEvent('${band.band_id}')" ${!isAvailable ? "disabled" : ""}>Request Event</button>`;
+            <button class="band-btn-request" onclick="requestPrivateEvent('${band.band_id}')">Request Event</button>`;
         } else {
           actionButtons += `<button class="band-btn-login" onclick="window.location.href='/user-login'">Login to Request</button>`;
         }
@@ -171,8 +170,5 @@ function openBandDetail(bandId) {
 }
 
 function requestPrivateEvent(bandId) {
-  if (!isUserAuthenticated) {
-    window.location.href = "/user-login";
-    return;
-  }
+  window.location.href = `/band/${bandId}`;
 }
