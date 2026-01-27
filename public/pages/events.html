@@ -5,11 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+    <nav id="mainNav" class="main-nav">
+        <div class="logo">
+            <a href="/pages/index.html" >Band Finder</a>
+        </div>
+    
+        <!-- FOR VISITORS -->
+        <div id="guestNav" class="nav-links" style="display: none;">
+          <a href="/bands.html">Bands</a>
+          <a href="/events.html">Events</a>
+          <a href="/user-login" class="btn-login">Login</a>
+          <a href="/register.html" class="btn-register">Register</a>
+        </div>
+    
+        <!-- FOR LOGGED IN USERS -->
+        <div id="userNav" class="nav-links" style="display: none;">
+          <a href="/bands.html">Bands</a>
+          <a href="/events.html">Events</a>
+          <a href="/user-dashboard" class="btn-dashboard">My Dashboard</a>
+        </div>
+      </nav>
     <div id="eventContainer">
         <p class="loading">Loading events...</p>
     </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+          <p>&copy; 2026 Band Finder. All rights reserved.</p>
+          <div class="footer-links">
+            <a href="https://www.musicportal.gr/bands/?lang=en" target="_blank">Music Portal</a>
+            <a href="https://musicbrainz.org/" target="_blank">MusicBrainz</a>
+            <a href="https://www.meteo.gr/cf-en.cfm?city_id=23" target="_blank">Meteo</a>
+          </div>
+        </div>
+    </footer>
+
     <script src="../js/events.js"></script>
 </body>
 </html>

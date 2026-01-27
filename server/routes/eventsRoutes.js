@@ -8,13 +8,16 @@ router.get('/:id', async (req, res) => {
     
     const [events] = await database.query(
       `SELECT 
-        public_event_id,
-        event_type as event_name,
+        band_id,
+        event_type,
+        event_description,
         event_datetime,
-        event_address as location,
+        participants_price,
         event_city,
-        participants_price
-       FROM public_events 
+        event_address,
+        event_lat,
+        event_lon
+       FROM public_events
        WHERE public_event_id = ?`,
       [eventId]
     );

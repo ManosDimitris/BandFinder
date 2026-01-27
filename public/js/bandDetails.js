@@ -134,7 +134,7 @@ async function submitReview(bandId, sender) {
     }
 
     const data = await response.json();
-    alert('Review submitted successfully!');
+    showSuccessMessage("Review submitted successfully!");
     document.getElementById('reviewForm').reset();
   } catch (err) {
     console.error('Submit review error:', err);
@@ -190,7 +190,7 @@ async function submitEventRequest(bandId) {
     }
 
     const data = await response.json();
-    alert('Event request submitted successfully!');
+    showSuccessMessage("Event request submitted successfully!");
     document.getElementById('requestEventForm').reset();
   } catch (err) {
     console.error('Submit event request error:', err);
@@ -210,4 +210,29 @@ async function getCoordinates(address) {
     lat: parseFloat(data[0].lat),
     lng: parseFloat(data[0].lon)
   };
+}
+
+
+function showSuccessMessage(message) {
+  const successDiv = document.createElement("div");
+  successDiv.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 600;
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+  `;
+  successDiv.textContent = message;
+  document.body.appendChild(successDiv);
+
+  setTimeout(() => {
+    successDiv.style.animation = "slideOut 0.3s ease";
+    setTimeout(() => successDiv.remove(), 300);
+  }, 3000);
 }

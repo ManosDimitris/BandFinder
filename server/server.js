@@ -58,6 +58,10 @@ app.get('/user-dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", 'user_dashboard.html'));
 });
 
+app.get('/band-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "pages", 'band_dashboard.html'));
+});
+
 
 app.get('/band/:id', (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", 'bandDetails.html'));
@@ -80,5 +84,6 @@ app.listen(PORT, HOST, () => {
   console.log(`Server running on http://${HOST}:${PORT}`);
   console.log(`Admin login: http://${HOST}:${PORT}/admin-login`);
   console.log(`User login: http://${HOST}:${PORT}/user-login`);
+  console.log(`User login: http://${HOST}:${PORT}/band-login`);
 });
 

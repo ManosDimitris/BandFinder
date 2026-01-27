@@ -94,9 +94,9 @@ async function loadBands(filterGenre = "", filterYear = "", filterCity = "") {
 
     if (filterGenre || filterYear || filterCity) {
       bands = bands.filter(band => {
-        const genreMatch = !filterGenre || (band.music_genre && band.music_genre.toLowerCase().includes(filterGenre));
+        const genreMatch = !filterGenre || (band.genre && band.genre.toLowerCase().includes(filterGenre));
         const yearMatch = !filterYear || band.foundedYear === parseInt(filterYear);
-        const cityMatch = !filterCity || (band.city && band.city.toLowerCase().includes(filterCity));
+        const cityMatch = !filterCity || (band.band_city && band.band_city.toLowerCase().includes(filterCity));
         return genreMatch && yearMatch && cityMatch;
       });
     }
@@ -172,3 +172,5 @@ function openBandDetail(bandId) {
 function requestPrivateEvent(bandId) {
   window.location.href = `/band/${bandId}`;
 }
+
+

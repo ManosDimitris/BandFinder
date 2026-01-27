@@ -1,0 +1,120 @@
+.logo a {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.event-detail-page {
+  padding: 40px 20px;
+  max-width: 1850px;
+  margin: 0 3em;
+
+}
+
+
+.btn-back {
+  display: inline-block;
+  margin-bottom: 30px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+
+.btn-back:hover {
+  background-color: #0056b3;
+}
+
+.event-container {
+  display: flex;
+  gap: 8em;
+  align-items: flex-start;
+}
+
+.event-image-section {
+  flex: 0 0 40%;
+}
+
+.band-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+
+.event-content-section {
+  flex: 1;
+}
+
+.event-content-section h1 {
+  margin: 0 0 30px 0;
+  font-size: 2.5em;
+  color: #333;
+}
+
+.event-info {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border-left: 4px solid #007bff;
+  width: 80%;
+}
+
+.event-info p {
+  margin: 12px 0;
+  font-size: 1.1em;
+  color: #555;
+}
+
+.event-info strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.event-info .eventPrice {
+    color: #2e7d32;
+    font-weight: bolder;
+}
+
+.band-section {
+  margin-top: 30px;
+}
+
+.band-section h3 {
+  font-size: 1.3em;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+
+.band-name {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #007bff;
+  margin: 0;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .event-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .event-image-section {
+    flex: 1;
+  }
+
+  .event-content-section h1 {
+    font-size: 1.8em;
+  }
+
+  .event-detail {
+    padding: 20px;
+  }
+}

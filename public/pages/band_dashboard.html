@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/band_dashboard.css">
+</head>
+
+<body>
+  <div id="bandDashboard" class="band-dashboard">
+    <header class="dashboard-header">
+      <h1>Dashboard</h1>
+      <div class="band-info">
+        <span><strong id="bandnameDisplay">Band</strong></span>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <div class="dashboard-main">
+      <aside class="dashboard-sidebar">
+        <div class="band-profile-card">
+          <div class="band-avatar" id="BandAvatar"></div>
+          <p class="band-name" id="bandNameSidebar">band</p>
+        </div>
+        
+        <nav class="dashboard-menu">
+          <h3>Navigation</h3>
+          <ul>
+            <li><a href="#" class="menu-link active" data-tab="profile">Profile</a></li>
+            <li><a href="#" class="menu-link" data-tab="availability">Availability</a></li>
+            <li><a href="#" class="menu-link" data-tab="public_events">Public Events</a></li>
+            <li><a href="#" class="menu-link" data-tab="private_events">Private Events</a></li>
+            <li><a href="#" class="menu-link" data-tab="messages">Messages</a></li>
+            <li><a href="#" class="menu-link" data-tab="reviews">Reviews</a></li>
+            <li><a href="/pages/index.html" class="Home" >Home</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="dashboard-content">
+        <div id="profile" class="dashboard-section active-tab">
+          <h2>My Profile</h2>
+          <div class="profile-form">
+            <div class="form-group">
+              <label for="profileName">bandname</label>
+              <input type="text" id="profileName" placeholder="" disabled>
+              <small class="form-text">This name will be shown on your profile.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="profileEmail">Email</label> 
+              <input type="text" id="profileEmail" placeholder="" disabled>
+              <small class="form-text">The email cannot be changed.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="profilePassword">Password</label>
+              <div class="password-input-group">
+                <input type="password" id="profilePassword" placeholder="">
+                <button type="button" id="togglePasswordBtn" class="toggle-password-btn">
+                  <img id="togglePasswordIcon" src="/assets/images/hidden.png" alt="Show password">
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <label for="profileBandName">Band name</label> 
+                <input type="text" id="profileBandName" placeholder="">
+              </div>
+  
+              <div class="form-group">
+                <label for="profileMusicGenre">Music genres</label> 
+                <input type="text" id="profileMusicGenre" placeholder="">
+              </div>
+  
+              <div class="form-group">
+                <label for="profileDescription">Description</label> 
+                <textarea id="profileDescription" rows="4" placeholder=""></textarea>
+                <small class="form-text">Write a short description. It will be visible on the site.</small>
+              </div>
+  
+              <div class="form-group">
+                <label for="profileMemberNumber">Member number</label>  
+                <input type="number" id="profileMemberNumber" placeholder="" min="1">
+                <small class="form-text">The number of members on your band.</small> 
+              </div>
+  
+              <div class="form-group">
+                <label for="foundedYear">Founded Year</label>
+                <input
+                  type="number"
+                  id="foundedYear"
+                  min="1900"
+                  max="2026"
+                  step="1"
+                  placeholder="">
+              </div>
+  
+              <div class="form-group">
+                <label for="profileCity">City</label> 
+                <input type="text" id="profileCity" placeholder="">
+              </div>
+  
+              <div class="form-group">
+                <label for="profileTelephone">Telephone</label> 
+                <input type="text" id="profileTelephone" placeholder="">
+              </div>
+  
+              <div class="form-group">
+                <label for="profileWebsite">Website</label> 
+                <input type="text" id="profileWebsite" placeholder="">
+              </div>
+            <button id="applyProfileBtn" class="btn-apply">Apply Changes</button>
+          </div>
+        </div>
+        
+        <div id="availability"  href="/band-dashboard#Availability" class="dashboard-section">
+            <h2>Availability</h2>
+            <p>Manage your availability here.</p>
+        </div>
+
+        <div id="public_events"  href="/band-dashboard#events" class="dashboard-section">
+            <h2>Public Events</h2>
+            <p>Manage your events here.</p>
+        </div>
+
+        <div id="private_events"  href="/band-dashboard#events" class="dashboard-section">
+          <h2>Private Events</h2>
+          <p>Manage your events here.</p>
+        </div>
+
+        <div id="messages" class="dashboard-section messages">
+          <h2>Messages</h2>
+            <div class="messages-section" id="messagesContainer"></div>
+        </div>
+
+        <div id="reviews" class="dashboard-section reviews">
+          <h2>Reviews</h2>
+          <div class="reviews-section" id="reviewsContainer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <script src="/js/bandDashboard.js"></script>
+</body>
+
+</html>

@@ -2,6 +2,67 @@ const express = require('express');
 const router = express.Router();
 const database = require('../config/database');
 
+router.get('/profile', async (req, res) => {
+  try {
+    const bandId = req.session.userId;
+    
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const [bands] = await database.query(
+      `SELECT 
+        band_id,
+        username,
+        email,
+        band_name,
+        music_genres,
+        band_description,
+        members_number,
+        foundedYear,
+        band_city,
+        telephone,
+        webpage
+       FROM bands 
+       WHERE band_id = ?`,
+      [bandId]
+    );
+    
+    if (bands && bands.length > 0) {
+      res.json({ authenticated: true, user: bands[0] });
+    } else {
+      res.status(404).json({ error: 'Band profile not found' });
+    }
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while fetching the profile' });
+  }
+});
+
+router.put('/profile', async (req, res) => {
+  try {
+    const bandId = req.session.userId;
+    
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const { username, email, band_name, music_genres, band_description, members_number, foundedYear, band_city, telephone, webpage } = req.body;
+
+    await database.query(
+      `UPDATE bands 
+       SET username = ?, email = ?, band_name = ?, music_genres = ?, band_description = ?, members_number = ?, foundedYear = ?, band_city = ?, telephone = ?, webpage = ?
+       WHERE band_id = ?`,
+      [username, email, band_name, music_genres, band_description, members_number, foundedYear, band_city, telephone, webpage, bandId]
+    );
+
+    res.json({ message: 'Profile updated successfully' });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while updating the profile' });
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
     const [bands] = await database.query(

@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Event Details</title>
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/eventDetails.css">
 </head>
 <body>
   <nav id="mainNav" class="main-nav">
-    <div class="logo">Band Finder</div>
+    <div class="logo">
+      <a href="/pages/index.html" >Band Finder</a>
+    </div>
     <div id="guestNav" class="nav-links" style="display: none;">
       <a href="/bands.html">Bands</a>
       <a href="/events.html">Events</a>
@@ -24,19 +27,46 @@
 
   <main class="event-detail-page">
     <section class="event-detail">
-      <div class="event-header">
-        <h1 id="eventName">Loading...</h1>
-        <a href="/events.html" class="btn-apply">Back to events</a>
-      </div>
+      <a href="/events.html" class="btn-back">Back to events</a>
+      
+      <div class="event-container">
+        <div class="event-image-section">
+          <img id="eventImage" src="../assets/images/audience.jpg" alt="Event" class="band-image">
+        </div>
 
-      <div id="eventInfo" class="event-info">
-        <p><strong>Date:</strong> <span id="eventDate">-</span></p>
-        <p><strong>Location:</strong> <span id="eventLocation">-</span></p>
-        <p><strong>City:</strong> <span id="eventCity">-</span></p>
-        <p><strong>Price:</strong> <span id="eventPrice">-</span></p>
+        <div class="event-content-section">
+          <h1 id="eventName">Loading...</h1>
+
+          <div class="event-info">
+            <p><strong>Date:</strong> <span id="eventDate">-</span></p>
+            <p><strong>Location:</strong> <span id="eventLocation">-</span></p>
+            <p><strong>City:</strong> <span id="eventCity">-</span></p>
+            <p class = "eventPrice"><strong>Entry price:</strong> <span id="eventPrice">-</span></p>
+            <p><strong>Description:</strong></p>
+            <p id="eventDescription"></p>
+          </div>
+
+          <div class="band-section">
+            <h3>Band Playing</h3>
+            <div id="bandCard" class="band-card" style="cursor: pointer;">
+              <p id="bandName" class="band-name">Loading</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; 2026 Band Finder. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="https://www.musicportal.gr/bands/?lang=en" target="_blank">Music Portal</a>
+        <a href="https://musicbrainz.org/" target="_blank">MusicBrainz</a>
+        <a href="https://www.meteo.gr/cf-en.cfm?city_id=23" target="_blank">Meteo</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="/js/index.js"></script>
   <script src="/js/eventDetails.js"></script>
