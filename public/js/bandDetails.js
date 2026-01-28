@@ -43,8 +43,9 @@ async function loadBand(id) {
     document.getElementById('bandMembers').textContent = band.members_number || '-';
     document.getElementById('bandCity').textContent = band.band_city || '-';
     document.getElementById('bandDescription').textContent = band.band_description;
-    document.getElementById('upcoming-events').textContent = 'Coming soon...';
-    document.getElementById('past-events').textContent = 'Coming soon...';
+    
+    // Fetch and display events
+    await loadBandEvents(id);
     
     if(isUserAuthenticated){
       const reviews = document.getElementById('reviewsSection');
@@ -114,6 +115,61 @@ async function loadBand(id) {
   }
 }
 
+async function loadBandEvents(bandId) {
+  try {
+    const res = await fetch(`/api/bands/events`);
+    if (!res.ok) throw new Error('Failed to fetch events');
+    
+    const events = await res.json();
+    const now = new Date();
+    
+    const upcomingEvents = events.filter(event => {
+      const eventDate = new Date(event.event_datetime);
+      return eventDate > now && event.band_id == bandId;
+    });
+    
+    const pastEvents = events.filter(event => {
+      const eventDate = new Date(event.event_datetime);
+      return eventDate <= now && event.band_id == bandId;
+    });
+    
+    const upcomingContainer = document.getElementById('upcoming-events');
+    const pastContainer = document.getElementById('past-events');
+    
+    if (upcomingEvents.length > 0) {
+      upcomingContainer.innerHTML = upcomingEvents.map(event => `
+        <div class="event-item">
+          <h4>${event.event_type}</h4>
+          <p><strong>Date:</strong> ${new Date(event.event_datetime).toLocaleDateString()}</p>
+          <p><strong>Time:</strong> ${new Date(event.event_datetime).toLocaleTimeString()}</p>
+          <p><strong>Location:</strong> ${event.event_city}</p>
+          <p><strong>Price:</strong> $${event.participants_price}</p>
+        </div>
+      `).join('');
+    } else {
+      upcomingContainer.textContent = 'No upcoming events';
+    }
+    
+    if (pastEvents.length > 0) {
+      pastContainer.innerHTML = pastEvents.map(event => `
+        <div class="event-item">
+          <h4>${event.event_type}</h4>
+          <p><strong>Date:</strong> ${new Date(event.event_datetime).toLocaleDateString()}</p>
+          <p><strong>Time:</strong> ${new Date(event.event_datetime).toLocaleTimeString()}</p>
+          <p><strong>Location:</strong> ${event.event_city}</p>
+          <p><strong>Price:</strong> $${event.participants_price}</p>
+        </div>
+      `).join('');
+    } else {
+      pastContainer.textContent = 'No past events';
+    }
+  } catch (err) {
+    console.error('Load events error:', err);
+    document.getElementById('upcoming-events').textContent = 'Unable to load events';
+    document.getElementById('past-events').textContent = 'Unable to load events';
+  }
+}
+
 async function submitReview(bandId, sender) {
   try {
     const rating = document.getElementById('rating').value;
@@ -169,19 +225,20 @@ async function submitEventRequest(bandId) {
       return;
     }
 
-    const response = await fetch(`/api/event/request`, {
+    const response = await fetch(`/api/bands/private-events`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        band_id: bandId,
-        event_type: eventType,
-        event_datetime: eventDate,
-        event_city: eventCity,
-        event_address: eventAddress,
-        event_description: eventDescription,
-        price: parseFloat(eventPrice),
-        event_lat: location.lat,
-        event_lon:  location.lng
+        eventName: eventType,
+        eventDate: eventDate.split('T')[0],
+        eventTime: eventDate.split('T')[1],
+        eventLocation: eventLocation,
+        eventCity: eventCity,
+        eventAddress: eventAddress,
+        eventDescription: eventDescription,
+        eventBudget: parseFloat(eventPrice),
+        eventLat: location.lat,
+        eventLon: location.lng
       })
     });
 

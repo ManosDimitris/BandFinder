@@ -1,0 +1,388 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f7f7f7;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    background: #231f20;
+    padding: 1.5em 2em;
+    align-items: center;
+}
+
+.logo {
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 700;
+    color: #f7f7f7;
+}
+.logo a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #f7f7f7;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #007bff;
+}   
+
+.btn-dashboard {
+    color: white;
+}
+
+.band-detail-page {
+    flex: 1;
+    padding: 2em;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.band-detail {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 2em;
+}
+
+.band-header {
+    padding: 1.5em 2em;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.btn-apply {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.7em 1.5em;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-apply:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.band-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3em;
+    padding: 2em;
+}
+
+@media (max-width: 900px) {
+    .band-info {
+        grid-template-columns: 1fr;
+        gap: 2em;
+    }
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.hero h1 {
+    font-size: 2.5em;
+    color: #231f20;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+#bandImage {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.details p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    padding: 0.8em 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.details p:last-child {
+    border-bottom: none;
+}
+
+.details strong {
+    color: #231f20;
+    font-weight: 600;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.band-description {
+    margin-top: 1em;
+
+}
+
+.band-description h3 {
+    color: #231f20;
+    margin-bottom: 1em;
+    font-size: 1.4em;
+}
+
+.band-description p {
+    color: #555;
+    line-height: 1.8;
+}
+
+.upcoming-events, .past-events {
+    padding: 1.5em 2em;
+    border-top: 1px solid #eaeaea;
+}
+
+.upcoming-events h3, .past-events h3 {
+    color: #231f20;
+    font-size: 1.4em;
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.upcoming-events p, .past-events p {
+    color: #666;
+    font-style: italic;
+    padding: 0.4em;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.Review, .RequestEvent {
+    padding: 2em;
+    margin: 1em 0;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.Review h3, .RequestEvent h3 {
+    color: #231f20;
+    font-size: 1.4em;
+    margin-bottom: 1.5em;
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid #007bff;
+}
+
+.footer {
+    background: #231f20;
+    color: #f7f7f7;
+    padding: 2em;
+    text-align: center;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin-top: 1.5em;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+}
+
+.footer-links a:hover {
+    color: #f7f7f7;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#bandInfo.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    color: #666;
+    font-style: italic;
+}
+
+.event-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5em;
+    margin-top: 1em;
+}
+
+.event-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5em;
+    border-left: 4px solid #28a745;
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.event-card h4 {
+    color: #231f20;
+    margin-bottom: 0.5em;
+}
+
+.event-card p {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 0.5em;
+}
+
+.event-card .event-date {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.review-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5em;
+    margin-bottom: 1em;
+    border-left: 4px solid #ffc107;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.reviewer-name {
+    font-weight: 600;
+    color: #231f20;
+}
+
+.review-rating {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.review-content {
+    color: #555;
+    line-height: 1.6;
+}
+
+
+.request-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #231f20;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.8em;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1em;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.submit-btn {
+    padding: 0.8em 2em;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.submit-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+
+.event-item {
+    background: #231f20;
+    padding: 1em;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    color: #f8f9fa;
+    margin: 1em;
+}

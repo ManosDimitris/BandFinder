@@ -3,10 +3,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   await loadUpcomingEvents();
   await loadBestBands();
 });
-
-
 let map;
-
 async function checkAuthentication() {
   try {
     const response = await fetch('/api/user/profile');
@@ -16,9 +13,12 @@ async function checkAuthentication() {
     const userNav = document.getElementById('userNav');
     const userFeatures = document.getElementById('userFeatures');
 
-    if (response.ok && data.authenticated && data.user) {
+    if (data.authenticated && data.user) {
+      
       if (guestNav) guestNav.style.display = 'none';
-      if (userNav) userNav.style.display = 'flex';
+      if (userNav) {
+        userNav.style.display = 'flex';
+      }
       if (userFeatures) userFeatures.style.display = 'block';
     } else {
       if (guestNav) guestNav.style.display = 'flex';
@@ -38,15 +38,10 @@ async function checkAuthentication() {
 
 async function loadUpcomingEvents() {
   try {
-    const eventsList = document.getElementById('upcomingEventsList');
-    if (!eventsList) {
-      console.warn('upcomingEventsList element not found');
-      return;
-    }
-
     const response = await fetch('/api/events/upcoming?limit=4');
     const events = await response.json();
 
+    const eventsList = document.getElementById('upcomingEventsList');
     eventsList.innerHTML = '';
 
     if (events && events.length > 0) {
@@ -62,48 +57,39 @@ async function loadUpcomingEvents() {
 
         const eventElement = document.createElement('div');
         eventElement.className = 'event-item';
-        eventElement.style.cursor = 'pointer';
-        eventElement.onclick = () => window.location.href = `/event/${event.public_event_id}`;
         eventElement.innerHTML = `
           <div class="event-image">
-            <img src="../assets/images/audience.jpg" alt="${event.event_name || 'Event'}">
+            <img src = "../assets/images/audience.jpg" alt="${event.event_name || 'Event'}">
           </div>
           <div class="event-content">
-            <div class="info-section">
+            <div class = "info-section">
               <div class="event-name">${event.event_name || 'Unnamed Event'}</div>
               <div class="event-date">${formattedDate}</div>
               <div class="event-location">${event.location || 'Location TBA'}</div>
             </div>
             <div class="EventDetails">
-              <a>Show Event</a>
+              <a href="/event-details.html?id=${event.public_event_id}">Show Event</a>
             </div>
           </div>
         `;
         eventsList.appendChild(eventElement);
       });
     } else {
-      eventsList.innerHTML = '<p class="loading">No upcoming events</p>';
+      eventsList.innerHTML = '<p class="loading">No upcoming events at the moment</p>';
     }
   } catch (error) {
     console.error('Error loading events:', error);
     const eventsList = document.getElementById('upcomingEventsList');
-    if (eventsList) {
-      eventsList.innerHTML = '<p class="loading">Could not load events</p>';
-    }
+    eventsList.innerHTML = '<p class="loading">Could not load events</p>';
   }
 }
 
 async function loadBestBands() {
   try {
-    const bandsList = document.getElementById('bestBandsList');
-    if (!bandsList) {
-      console.warn('bestBandsList element not found');
-      return;
-    }
-
-    const response = await fetch('/api/bands/new?limit=4');
+    const response = await fetch('/api/bands/new?limit=3');
     const bands = await response.json();
 
+    const bandsList = document.getElementById('bestBandsList');
     bandsList.innerHTML = '';
 
     if (bands && bands.length > 0) {
@@ -111,52 +97,33 @@ async function loadBestBands() {
         const rating = (band.average_rating || 0).toFixed(1);
         const bandElement = document.createElement('div');
         bandElement.className = 'band-item';
-        bandElement.style.cursor = 'pointer';
-        bandElement.onclick = () => window.location.href = `/band/${band.band_id}`;
         bandElement.innerHTML = `
           <div class="band-image">
-            <img src="../assets/images/bands.jpg" alt="${band.band_name || 'Band'}">
+            <img src="../assets/images/audience.jpg" alt="${band.band_name || 'Band'}">
           </div>
           <div class="band-content">
             <div class="band-name">${band.band_name || 'Unknown Band'}</div>
-            <div class="band-description">
-              ${band.band_description || 'No description available'}
-            </div>
-            <div class="band-stats">
-              <div class="stat-item">
-                <div class="stat-number">${rating}</div>
-                <div class="stat-label">Rating</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">${band.review_count || 0}</div>
-                <div class="stat-label">Reviews</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">${band.foundedYear || '-'}</div>
-                <div class="stat-label">Year Founded</div>
-              </div>
-            </div>
+            <div class="band-rating">${rating}/5 (${band.review_count || 0} reviews)</div>
+            ${band.genre ? `<div style="font-size: 0.9em; color: #aaa;">Genre: ${band.genre}</div>` : ''}
+
           </div>
         `;
         bandsList.appendChild(bandElement);
       });
     } else {
-      bandsList.innerHTML = '<p class="loading">No bands available</p>';
+      bandsList.innerHTML = '<p class="loading">No bands with ratings yet</p>';
     }
   } catch (error) {
     console.error('Error loading bands:', error);
     const bandsList = document.getElementById('bestBandsList');
-    if (bandsList) {
-      bandsList.innerHTML = '<p class="loading">Could not load bands</p>';
-    }
+    bandsList.innerHTML = '<p class="loading">Could not load bands</p>';
   }
 }
 
 window.initMap = function () {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 8,
-    center: { lat: 35.3387, lng: 25.1442 },
-    width : '80%',
+    center: { lat: 35.3387, lng: 25.1442 }
   });
 
   loadEventMap();
@@ -168,15 +135,6 @@ async function loadEventMap() {
     const events = await res.json();
 
     events.forEach(event => {
-      const marker = new google.maps.Marker({
-        position: {
-          lat: Number(event.lat),
-          lng: Number(event.lon)
-        },
-        map: map,
-        title: event.event_name
-      });
-
       const infoWindow = new google.maps.InfoWindow({
         content: `
         <a href="/event/${event.public_event_id}" style="text-decoration:none; color:black;">
@@ -190,9 +148,18 @@ async function loadEventMap() {
             ${event.event_city}<br>
             ${event.location}<br>
             ${new Date(event.event_datetime).toLocaleDateString()}
-          ,</div>
+          </div>
         </a>
         `
+      });
+
+      const marker = new google.maps.Marker({
+        position: {
+          lat: Number(event.lat),
+          lng: Number(event.lon)
+        },
+        map: map,
+        title: event.event_name
       });
 
       marker.addListener("click", () => {
