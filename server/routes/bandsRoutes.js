@@ -203,52 +203,250 @@ router.put('/profile', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Logout failed' });
+    }
+    res.clearCookie('connect.sid');
+    res.json({ success: true, message: 'Logged out successfully' });
+  });
+});
+
+// PRIVATE EVENTS ROUTES (must come before generic routes)
+router.get('/private-events', async (req, res) => {
   try {
-    const [bands] = await database.query(
+    const bandId = req.session.userId;
+    
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const [events] = await database.query(
       `SELECT 
+        private_event_id as id,
         band_id,
-        band_name,
-        music_genres as genre,
-        foundedYear,
-        band_description,
-        members_number,
-        band_city
-       FROM bands`
+        user_id,
+        event_type,
+        event_datetime,
+        event_city,
+        event_address,
+        event_description,
+        price,
+        event_lat,
+        event_lon,
+        status,
+        band_decision
+       FROM private_events
+       WHERE band_id = ?
+       ORDER BY event_datetime DESC`,
+      [bandId]
     );
-    res.json(bands);
+
+    res.json({ events });
   } catch (error) {
     console.error('Database error:', error);
-    res.status(500).json({ error: 'An error occurred while getting the bands' });
+    res.status(500).json({ error: 'An error occurred while fetching private events' });
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.post('/private-events', async (req, res) => {
   try {
-    const bandId = req.params.id;
+    const bandId = req.session.userId;
     
-    const [bands] = await database.query(
-      `SELECT 
-        band_id,
-        band_name,
-        music_genres as genre,
-        foundedYear,
-        band_description,
-        members_number,
-        band_city
-       FROM bands 
-       WHERE band_id = ?`,
-      [bandId]
-    );
-    
-    if (bands && bands.length > 0) {
-      res.json(bands[0]);
-    } else {
-      res.status(404).json({ error: 'Band not found' });
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
     }
+
+    const { eventName, eventDate, eventTime, eventLocation, eventDescription, eventBudget, eventCity, eventAddress, eventLat, eventLon } = req.body;
+
+    if (!eventName || !eventDate || !eventTime || !eventLocation) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const eventDateTime = `${eventDate}T${eventTime}`;
+
+    await database.query(
+      `INSERT INTO private_events (band_id, event_type, event_datetime, event_location, event_city, event_address, event_description, price, event_lat, event_lon, status, band_decision)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [bandId, eventName, eventDateTime, eventLocation, eventCity || '', eventAddress || '', eventDescription || '', eventBudget || 0, eventLat || null, eventLon || null, 'created', '']
+    );
+
+    res.status(201).json({ message: 'Private event created successfully' });
   } catch (error) {
     console.error('Database error:', error);
-    res.status(500).json({ error: 'An error occurred while fetching the band' });
+    res.status(500).json({ error: 'An error occurred while creating the event' });
+  }
+});
+
+router.delete('/private-events/:id', async (req, res) => {
+  try {
+    const bandId = req.session.userId;
+    const eventId = req.params.id;
+
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    await database.query(
+      `DELETE FROM private_events WHERE private_event_id = ? AND band_id = ?`,
+      [eventId, bandId]
+    );
+
+    res.json({ message: 'Event deleted successfully' });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the event' });
+  }
+});
+
+router.get('/messages', async (req, res) => {
+  try {
+    const bandId = req.session.userId;
+    
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const [messages] = await database.query(
+      `
+      SELECT m.*, u.username
+      FROM messages m
+      JOIN private_events pe ON m.private_event_id = pe.private_event_id
+      JOIN users u ON pe.user_id = u.user_id
+      WHERE pe.band_id = ?
+      ORDER BY m.date_time ASC
+      `,
+      [bandId]
+    );
+
+    res.json({ messages });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while fetching messages' });
+  }
+});
+
+router.post('/messages', async (req, res) => {
+  try {
+    const bandId = req.session.userId;
+    
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const { privateEventId, message } = req.body;
+
+    if (!privateEventId || !message) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const [events] = await database.query(
+      `SELECT user_id FROM private_events WHERE private_event_id = ? AND band_id = ?`,
+      [privateEventId, bandId]
+    );
+
+    if (events.length === 0) {
+      return res.status(404).json({ error: 'Event not found or unauthorized' });
+    }
+
+    const dateTime = new Date().toISOString();
+
+    await database.query(
+      `INSERT INTO messages (private_event_id, message, sender, recipient, date_time)
+       VALUES (?, ?, ?, ?, ?)`,
+      [privateEventId, message, 'band', 'user', dateTime]
+    );
+
+    res.status(201).json({ message: 'Reply sent successfully' });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while sending the message' });
+  }
+});
+
+// PUBLIC EVENTS ROUTE
+router.post('/events', async (req, res) => {
+  try {
+    const bandId = req.session.userId;
+    
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const { eventName, eventDate, eventTime, eventLocation, eventDescription, eventBudget } = req.body;
+
+    if (!eventName || !eventDate || !eventTime || !eventLocation) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const eventDateTime = `${eventDate}T${eventTime}`;
+
+    await database.query(
+      `INSERT INTO public_events (band_id, event_type, event_datetime, event_address, event_city, event_description, participants_price, event_lat, event_lon)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [bandId, eventName, eventDateTime, eventLocation, '', eventDescription || '', eventBudget || 0, null, null]
+    );
+
+    res.status(201).json({ message: 'Public event created successfully' });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while creating the event' });
+  }
+});
+
+router.get('/events', async (req, res) => {
+  try {
+    const [events] = await database.query(
+      `SELECT 
+        public_event_id,
+        band_id,
+        event_type,
+        event_description,
+        event_datetime,
+        participants_price,
+        event_city,
+        event_address,
+        event_lat,
+        event_lon
+       FROM public_events
+       ORDER BY event_datetime DESC`
+    );
+    res.json(events);
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while fetching public events' });
+  }
+});
+
+// REVIEWS ROUTES
+router.get('/reviews', async (req, res) => {
+  try {
+    const bandId = req.session.userId;
+    
+    if (!bandId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    const [reviews] = await database.query(
+      `SELECT 
+        review_id,
+        band_name,
+        sender,
+        review,
+        rating,
+        date_time,
+        status
+       FROM reviews
+       WHERE band_name = (SELECT band_name FROM bands WHERE band_id = ?)
+       ORDER BY date_time DESC`,
+      [bandId]
+    );
+
+    res.json({ reviews });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while fetching reviews' });
   }
 });
 
@@ -300,14 +498,53 @@ router.post("/:id/reviews", async (req, res) => {
   }
 });
 
-router.post('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ error: 'Logout failed' });
+router.get('/', async (req, res) => {
+  try {
+    const [bands] = await database.query(
+      `SELECT 
+        band_id,
+        band_name,
+        music_genres as genre,
+        foundedYear,
+        band_description,
+        members_number,
+        band_city
+       FROM bands`
+    );
+    res.json(bands);
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while getting the bands' });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const bandId = req.params.id;
+    
+    const [bands] = await database.query(
+      `SELECT 
+        band_id,
+        band_name,
+        music_genres as genre,
+        foundedYear,
+        band_description,
+        members_number,
+        band_city
+       FROM bands 
+       WHERE band_id = ?`,
+      [bandId]
+    );
+    
+    if (bands && bands.length > 0) {
+      res.json(bands[0]);
+    } else {
+      res.status(404).json({ error: 'Band not found' });
     }
-    res.clearCookie('connect.sid');
-    res.json({ success: true, message: 'Logged out successfully' });
-  });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'An error occurred while fetching the band' });
+  }
 });
 
 module.exports = router;
