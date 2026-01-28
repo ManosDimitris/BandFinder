@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Band Login - Band Finder</title>
+  <link rel="stylesheet" href="/css/bandLogin.css">
+</head>
+<body class="login-page">
+  <div class="login-tabs-container">
+    <div class="login-tabs">
+      <button class="tab-btn active" data-tab="login">Login</button>
+      <button class="tab-btn" data-tab="signup">Signup</button>
+    </div>
+    
+    <div class="tab-content">
+      <!-- Login -->
+      <div id="login-tab" class="tab-pane active">
+        <h2 class="login-title">Band Login</h2>
+        
+        <form id="bandLoginForm">
+          <div class="form-group">
+            <label for="loginEmail">Email Address</label>
+            <input 
+              type="email" 
+              id="loginEmail" 
+              name="email"
+              placeholder="Enter your band email"
+              required
+              autocomplete="email"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input 
+              type="password" 
+              id="loginPassword" 
+              name="password"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+            >
+          </div>
+
+          <a href="#" class="forgot-password">Forgot password?</a>
+
+          <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+          <button type="submit" class="login-btn">
+            Login
+          </button>
+        </form>
+
+        <div class="switch-text">
+          Don't have an account? <a href="#" id="goToSignup">Register now</a>
+        </div>
+      </div>
+      
+      <!-- Register -->
+      <div id="signup-tab" class="tab-pane">
+        <h2 class="login-title">Register Your Band</h2>
+        
+        <form id="bandRegisterForm">
+      
+          <div class="form-group">
+            <label for="bandName">Band Name *</label>
+            <input 
+              type="text" 
+              id="bandName" 
+              placeholder="Enter your band name"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="registerEmail">Email Address *</label>
+            <input 
+              type="email" 
+              id="registerEmail" 
+              placeholder="Enter band email"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="registerPassword">Password *</label>
+            <input 
+              type="password" 
+              id="registerPassword" 
+              placeholder="Create a password (min 6 characters)"
+              required
+              minlength="6"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password *</label>
+            <input 
+              type="password" 
+              id="confirmPassword"
+              placeholder="Confirm your password"
+              required
+              minlength="6"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="musicGenre">Music Genre *</label>
+            <select id="musicGenre" required>
+              <option value="">Select a genre</option>
+              <option value="Rock">Rock</option>
+              <option value="Pop">Pop</option>
+              <option value="Jazz">Jazz</option>
+              <option value="Classical">Classical</option>
+              <option value="Electronic">Electronic</option>
+              <option value="Hip-Hop">Hip-Hop</option>
+              <option value="Metal">Metal</option>
+              <option value="Blues">Blues</option>
+              <option value="Folk">Folk</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bandDescription">Band Description *</label>
+            <textarea 
+              id="bandDescription" 
+              placeholder="Tell us about your band"
+              required
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="otherGenres">Other Genres</label>
+            <input 
+              type="text" 
+              id="otherGenres" 
+              placeholder="Comma-separated additional genres"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="bandCountry">Country</label>
+            <input 
+              type="text" 
+              id="bandCountry" 
+              placeholder="Country"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="bandCity">City</label>
+            <input 
+              type="text" 
+              id="bandCity" 
+              placeholder="City"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="yearFormed">Year Formed</label>
+            <input 
+              type="number" 
+              id="yearFormed" 
+              placeholder="e.g., 2020"
+              min="1900"
+              max="2100"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="memberCount">Number of Members</label>
+            <input 
+              type="number" 
+              id="memberCount" 
+              placeholder="Number of members"
+              min="1"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="contactPhone">Contact Phone</label>
+            <input 
+              type="tel" 
+              id="contactPhone" 
+              placeholder="Contact phone number"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="website">Website</label>
+            <input 
+              type="url" 
+              id="website" 
+              placeholder="https://yourband.com"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="socialMedia">Social Media</label>
+            <input 
+              type="text" 
+              id="socialMedia" 
+              placeholder="Social media links (comma-separated)"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="instrumentsNeeded">Instruments Needed</label>
+            <input 
+              type="text" 
+              id="instrumentsNeeded" 
+              placeholder="Comma-separated list of needed instruments"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Looking for:</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" name="lookingFor" value="Members">
+                Members
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="lookingFor" value="Gigs">
+                Gigs
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="lookingFor" value="Collaboration">
+                Collaboration
+              </label>
+            </div>
+          </div>
+
+          <div id="signupErrorMessage" class="error-message" style="display: none;"></div>
+
+          <button type="submit" class="login-btn">
+            Register
+          </button>
+        </form>
+
+        <div class="switch-text">
+          Already have an account? <a href="#" id="goToLogin">Login here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/bandLogin.js"></script>
+</body>
+</html>

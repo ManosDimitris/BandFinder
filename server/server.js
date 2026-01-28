@@ -22,7 +22,9 @@ app.use(session({
   saveUninitialized: false,
   cookie: { 
     secure: false, 
-    maxAge: 1000 * 60 * 60 * 24 // 24 hours
+    maxAge: 1000 * 60 * 60 * 24, // 24 hours,
+    httpOnly: true,
+    sameSite: 'lax'
   }
 }));
 
@@ -36,6 +38,7 @@ app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api', require('./routes/main'));
 app.use('/api/bands', require('./routes/bandsRoutes'));
 app.use('/api/event', require('./routes/eventsRoutes'));
+
 
 
 app.get("/", (req, res) => {
@@ -62,6 +65,9 @@ app.get('/band-dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", 'band_dashboard.html'));
 });
 
+app.get('/band-login', (req, res) => {
+  res.sendFile(path.join(__dirname, "../public", "pages", 'login_band.html'));
+});
 
 app.get('/band/:id', (req, res) => {
   res.sendFile(path.join(__dirname, "../public", "pages", 'bandDetails.html'));
